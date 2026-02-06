@@ -12,6 +12,10 @@
   color: #fff;
   padding: 12px 20px;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
 }
 
 .app-header h1 {
@@ -20,9 +24,41 @@
   font-weight: 600;
 }
 
+/* View Tabs */
+.view-tabs {
+  display: flex;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 4px;
+  border-radius: 8px;
+}
+
+.view-tab {
+  padding: 8px 16px;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+}
+
+.view-tab:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.view-tab.active {
+  background: #fff;
+  color: #1a1a2e;
+}
+
 .app-content {
   display: flex;
   flex: 1;
+  min-height: 0;
   overflow: hidden;
 }
 
@@ -44,6 +80,12 @@
   flex: 1;
   position: relative;
   min-height: 0;
+  height: 100%;
+}
+
+.map-container .leaflet-container {
+  height: 100%;
+  width: 100%;
 }
 
 /* Employee Search */
@@ -257,6 +299,17 @@
 
 /* Responsive layout */
 @media (max-width: 768px) {
+  .app-header {
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px 16px;
+  }
+
+  .view-tabs {
+    width: 100%;
+    justify-content: center;
+  }
+
   .app-content {
     flex-direction: column;
   }
@@ -279,4 +332,116 @@
     padding: 10px 12px;
     min-width: 120px;
   }
+}
+
+/* Table Container */
+.table-container {
+  flex: 1;
+  overflow: auto;
+  padding: 20px;
+  background-color: #f8f9fa;
+}
+
+/* Data Table View */
+.data-table-view {
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e5e7eb;
+  background-color: #f8f9fa;
+}
+
+.table-header h2 {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.table-count {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+/* Sortable Table */
+.sortable-table-container {
+  overflow-x: auto;
+}
+
+.sortable-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.sortable-table th {
+  text-align: left;
+  padding: 12px 16px;
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #e5e7eb;
+  font-weight: 600;
+  color: #374151;
+  white-space: nowrap;
+}
+
+.sortable-table th.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.sortable-table th.sortable:hover {
+  background-color: #f3f4f6;
+}
+
+.sortable-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5e7eb;
+  color: #4b5563;
+}
+
+.sortable-table tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+.sortable-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table-empty {
+  padding: 40px 20px;
+  text-align: center;
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+/* Status Badge */
+.status-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-badge.status-success {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.status-badge.status-pending {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.status-badge.status-failed {
+  background-color: #fee2e2;
+  color: #991b1b;
 }

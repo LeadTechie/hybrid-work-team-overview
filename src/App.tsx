@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import { useOfficeStore } from './stores/officeStore';
 import { useEmployeeStore } from './stores/employeeStore';
@@ -8,8 +8,15 @@ import { MapView } from './components/map/MapView';
 import { FilterPanel } from './components/filters/FilterPanel';
 import { EmployeeSearch } from './components/filters/EmployeeSearch';
 import { DataSummary } from './components/DataSummary';
+import { ViewTabs } from './components/ViewTabs';
+import { OfficesTable } from './components/tables/OfficesTable';
+import { EmployeesTable } from './components/tables/EmployeesTable';
+
+type ViewTab = 'map' | 'offices' | 'employees';
 
 function App() {
+  const [activeTab, setActiveTab] = useState<ViewTab>('map');
+
   const {
     offices,
     isInitialized: officesInitialized,
@@ -53,6 +60,7 @@ function App() {
     <div className="app">
       <header className="app-header">
         <h1>Hybrid Office Finder</h1>
+        <ViewTabs activeTab={activeTab} onTabChange={setActiveTab} />
       </header>
       <div className="app-content">
         <aside className="sidebar">
@@ -60,8 +68,10 @@ function App() {
           <FilterPanel />
           <DataSummary />
         </aside>
-        <main className="map-container">
-          <MapView />
+        <main className={activeTab === 'map' ? 'map-container' : 'table-container'}>
+          {activeTab === 'map' && <MapView />}
+          {activeTab === 'offices' && <OfficesTable />}
+          {activeTab === 'employees' && <EmployeesTable />}
         </main>
       </div>
     </div>

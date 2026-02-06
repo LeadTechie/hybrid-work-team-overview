@@ -1,0 +1,8 @@
+name;strasse;plz;stadt;team;department;role
+Hans Weber;Hauptstraße 15;60311;Frankfurt;Platform;Engineering;Developer
+Maria Schmidt;Berliner Str. 42;10115;Berlin;Frontend;Engineering;Senior Developer
+Thomas Müller;Maximilianstr. 10;80539;München;Backend;Engineering;Tech Lead
+Anna Becker;Schillerstraße 8;20095;Hamburg;DevOps;Engineering;Developer
+Klaus Fischer;Rheinufer 12;40213;Düsseldorf;QA;Engineering;Tester
+Lisa Hoffmann;Goethestraße 5;04109;Leipzig;Data;Engineering;Analyst
+;Missing Name;12345;Somewhere;InvalidTeam;Engineering;Developer
