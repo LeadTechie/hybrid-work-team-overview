@@ -5,11 +5,12 @@ import 'react-leaflet-cluster/dist/assets/MarkerCluster.Default.css';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-cluster';
 import { useOfficeStore } from '../../stores/officeStore';
-import { useEmployeeStore } from '../../stores/employeeStore';
 import { useFilterStore } from '../../stores/filterStore';
+import { useFilteredEmployees } from '../../hooks/useFilteredEmployees';
 import { OfficeMarker } from './OfficeMarker';
 import { EmployeeMarker } from './EmployeeMarker';
 import { MapController } from './MapController';
+import { MapLegend } from './MapLegend';
 
 // Germany geographic center
 const GERMANY_CENTER: [number, number] = [51.1657, 10.4515];
@@ -17,19 +18,15 @@ const INITIAL_ZOOM = 6;
 
 export function MapView() {
   const { offices } = useOfficeStore();
-  const { employees } = useEmployeeStore();
   const { colorBy, selectedEmployeeId } = useFilterStore();
 
-  // Find the selected employee for MapController
-  const selectedEmployee = selectedEmployeeId
-    ? employees.find((e) => e.id === selectedEmployeeId) ?? null
-    : null;
+  // Get filtered employees (already filtered for geocode success)
+  const filteredEmployees = useFilteredEmployees();
 
-  // Filter to only employees with valid coordinates
-  // (Plan 03 will wire in useFilteredEmployees hook for full filtering)
-  const geocodedEmployees = employees.filter(
-    (e) => e.geocodeStatus === 'success' && e.coords
-  );
+  // Find the selected employee for MapController (from filtered list)
+  const selectedEmployee = selectedEmployeeId
+    ? filteredEmployees.find((e) => e.id === selectedEmployeeId) ?? null
+    : null;
 
   // Offices with valid coordinates
   const geocodedOffices = offices.filter(
@@ -58,7 +55,7 @@ export function MapView() {
 
       {/* Employee markers - clustered for performance */}
       <MarkerClusterGroup chunkedLoading>
-        {geocodedEmployees.map((employee) => (
+        {filteredEmployees.map((employee) => (
           <EmployeeMarker
             key={employee.id}
             employee={employee}
@@ -67,6 +64,9 @@ export function MapView() {
           />
         ))}
       </MarkerClusterGroup>
+
+      {/* Legend showing color meanings */}
+      <MapLegend />
     </MapContainer>
   );
 }
