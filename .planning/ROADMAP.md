@@ -29,11 +29,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. System displays sample data (5 German offices, 30-50 employees) on first load
   4. German characters (umlauts, eszett) display correctly after import
   5. Geocoding progress is visible and completes without silent failures
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 01-01: TBD
-- [ ] 01-02: TBD
+- [ ] 01-01-PLAN.md - Project setup, types, stores, and seed data generation
+- [ ] 01-02-PLAN.md - CSV parsing and geocoding services
+- [ ] 01-03-PLAN.md - Import UI with preview and progress
 
 ### Phase 2: Map & Filtering
 **Goal**: Users can visualize offices and employees on an interactive Germany map and filter by attributes
@@ -87,7 +88,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Data Pipeline | 0/TBD | Not started | - |
+| 1. Foundation & Data Pipeline | 0/3 | Planned | - |
 | 2. Map & Filtering | 0/TBD | Not started | - |
 | 3. Distance & Team Intelligence | 0/TBD | Not started | - |
 | 4. Export & Polish | 0/TBD | Not started | - |
