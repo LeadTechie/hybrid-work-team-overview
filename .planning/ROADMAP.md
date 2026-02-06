@@ -46,11 +46,13 @@ Plans:
   3. User can color-code markers by team, department, or assigned office
   4. User can filter employees by team, department, or assigned office
   5. User can search for an employee by name and see them highlighted on map
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] 02-01: TBD
-- [ ] 02-02: TBD
+- [ ] 02-01-PLAN.md - Install dependencies, create filter store and marker utilities
+- [ ] 02-02-PLAN.md - Create map components (MapView, markers, controller)
+- [ ] 02-03-PLAN.md - Create filter panel and employee search with debounce
+- [ ] 02-04-PLAN.md - Integration, legend, layout, and verification
 
 ### Phase 3: Distance & Team Intelligence
 **Goal**: Users can see distances from employees to offices and analyze team co-location impact
@@ -89,7 +91,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Data Pipeline | 0/3 | Planned | - |
-| 2. Map & Filtering | 0/TBD | Not started | - |
+| 2. Map & Filtering | 0/4 | Planned | - |
 | 3. Distance & Team Intelligence | 0/TBD | Not started | - |
 | 4. Export & Polish | 0/TBD | Not started | - |
 
