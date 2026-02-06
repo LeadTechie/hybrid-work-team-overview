@@ -4,6 +4,21 @@ import { useOfficeStore } from './stores/officeStore'
 import { useEmployeeStore } from './stores/employeeStore'
 import { generateSeedOffices } from './data/seedOffices'
 import { generateSeedEmployees } from './data/seedEmployees'
+import { DataSummary } from './components/DataSummary'
+import { ImportPanel } from './components/import/ImportPanel'
+
+const styles = {
+  container: {
+    maxWidth: '900px',
+    margin: '0 auto',
+    padding: '20px',
+    textAlign: 'left' as const,
+  },
+  title: {
+    textAlign: 'center' as const,
+    marginBottom: '24px',
+  },
+}
 
 function App() {
   const { offices, isInitialized: officesInitialized, setOffices, setInitialized: setOfficesInitialized } = useOfficeStore()
@@ -36,9 +51,10 @@ function App() {
   ])
 
   return (
-    <div>
-      <h1>Hybrid Office Finder</h1>
-      <p>{offices.length} offices, {employees.length} employees loaded</p>
+    <div style={styles.container}>
+      <h1 style={styles.title}>Hybrid Office Finder</h1>
+      <DataSummary />
+      <ImportPanel />
     </div>
   )
 }
