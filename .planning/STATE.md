@@ -54,6 +54,9 @@ Recent decisions affecting current work:
 - [01-02]: 200ms delay between geocode requests (5 req/sec free tier limit)
 - [02-01]: No persist middleware for filterStore - filter state is session-specific
 - [02-01]: Leaflet namespace import (`import * as L`) for TypeScript compatibility
+- [02-02]: Office markers not clustered - offices should always be visible as landmarks
+- [02-02]: React.memo on EmployeeMarker to prevent cascade re-renders
+- [02-02]: Controller pattern for non-visual map operations via useMap hook
 - [02-03]: useMemo for filtered employees - memoizes filter computation
 - [02-03]: 250ms debounce for search - balances responsiveness with avoiding excessive filtering
 - [02-03]: 5 suggestions max - keeps dropdown manageable
