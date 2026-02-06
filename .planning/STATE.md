@@ -10,28 +10,28 @@ See: .planning/PROJECT.md (updated 2026-02-06)
 ## Current Position
 
 Phase: 2 of 4 (Map & Filtering)
-Plan: 1 of 4 in current phase
+Plan: 3 of 4 in current phase
 Status: In progress
-Last activity: 2026-02-06 - Completed 02-01-PLAN.md
+Last activity: 2026-02-06 - Completed 02-03-PLAN.md
 
-Progress: [########------------] 38% (4/11 plans total)
+Progress: [############--------] 55% (6/11 plans total)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 4
-- Average duration: 5 min
-- Total execution time: 17 min
+- Total plans completed: 6
+- Average duration: 4 min
+- Total execution time: 21 min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-foundation | 3 | 15 min | 5 min |
-| 02-map-filtering | 1 | 2 min | 2 min |
+| 02-map-filtering | 3 | 6 min | 2 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (7 min), 01-02 (5 min), 01-03 (~3 min), 02-01 (2 min)
+- Last 5 plans: 01-02 (5 min), 01-03 (~3 min), 02-01 (2 min), 02-02 (~2 min), 02-03 (2 min)
 - Trend: Improving
 
 *Updated after each plan completion*
@@ -54,6 +54,9 @@ Recent decisions affecting current work:
 - [01-02]: 200ms delay between geocode requests (5 req/sec free tier limit)
 - [02-01]: No persist middleware for filterStore - filter state is session-specific
 - [02-01]: Leaflet namespace import (`import * as L`) for TypeScript compatibility
+- [02-03]: useMemo for filtered employees - memoizes filter computation
+- [02-03]: 250ms debounce for search - balances responsiveness with avoiding excessive filtering
+- [02-03]: 5 suggestions max - keeps dropdown manageable
 
 ### Pending Todos
 
@@ -66,8 +69,8 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-06T17:12:38Z
-Stopped at: Completed 02-01-PLAN.md
+Last session: 2026-02-06T17:17:21Z
+Stopped at: Completed 02-03-PLAN.md
 Resume file: None
 
 ---
