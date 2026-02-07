@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-06)
 ## Current Position
 
 Phase: 2.1 of 4 (Security & Privacy Hardening)
-Plan: 1 of 3 in current phase
+Plan: 2 of 3 in current phase
 Status: In progress
-Last activity: 2026-02-07 - Completed 02.1-01-PLAN.md
+Last activity: 2026-02-07 - Completed 02.1-02-PLAN.md
 
-Progress: [#############-------] 58% (7/12 plans total)
+Progress: [##############------] 67% (8/12 plans total)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 7
+- Total plans completed: 8
 - Average duration: 3 min
-- Total execution time: 22 min
+- Total execution time: 24 min
 
 **By Phase:**
 
@@ -29,11 +29,11 @@ Progress: [#############-------] 58% (7/12 plans total)
 |-------|-------|-------|----------|
 | 01-foundation | 3 | 15 min | 5 min |
 | 02-map-filtering | 3 | 6 min | 2 min |
-| 02.1-security-privacy-hardening | 1 | 1 min | 1 min |
+| 02.1-security-privacy-hardening | 2 | 3 min | 1.5 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-03 (~3 min), 02-01 (2 min), 02-02 (~2 min), 02-03 (2 min), 02.1-01 (1 min)
-- Trend: Improving
+- Last 5 plans: 02-01 (2 min), 02-02 (~2 min), 02-03 (2 min), 02.1-01 (1 min), 02.1-02 (2 min)
+- Trend: Stable
 
 *Updated after each plan completion*
 
@@ -64,6 +64,9 @@ Recent decisions affecting current work:
 - [02.1-01]: crypto-js for AES encryption with versioned storage key (hwto-v1)
 - [02.1-01]: CSP allows openstreetmap tiles, blocks external API calls (connect-src 'self')
 - [02.1-01]: DATA_LIMITS centralized validation constants
+- [02.1-02]: WZB plz_geocoord dataset for German postcode centroids (Apache 2.0)
+- [02.1-02]: Synchronous geocoding returns null for unknown postcodes (graceful failure)
+- [02.1-02]: ~5km postcode centroid accuracy for privacy-first distance calculations
 
 ### Pending Todos
 
@@ -80,8 +83,8 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-07T09:52:21Z
-Stopped at: Completed 02.1-01-PLAN.md
+Last session: 2026-02-07T09:54:00Z
+Stopped at: Completed 02.1-02-PLAN.md
 Resume file: None
 
 ---
