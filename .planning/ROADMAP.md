@@ -17,6 +17,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 2.1: Security & Privacy Hardening** - Local postcode geocoding, encrypted localStorage, clear data button, CSP headers (INSERTED)
 - [ ] **Phase 3: Distance & Team Intelligence** - Distance calculations, nearest office, team co-location analysis
 - [ ] **Phase 4: Export & Polish** - CSV/PDF/Excel export, production hardening
+- [ ] **Phase 5: Better Visualizations** - Map B&W toggle, distance lines on click, Google Maps navigation links
 
 ## Phase Details
 
@@ -105,10 +106,25 @@ Plans:
 Plans:
 - [ ] 04-01: TBD
 
+### Phase 5: Better Visualizations
+**Goal**: Enhanced map interactions for clearer employee visualization and distance verification
+**Depends on**: Phase 3
+**Requirements**: VIS-01, VIS-02, VIS-03
+**Success Criteria** (what must be TRUE):
+  1. User can toggle map to B&W/faded mode for better marker contrast
+  2. Clicking an employee draws lines to all offices with distance labels
+  3. Employee popup includes prefilled Google Maps navigation link for manual distance verification
+  4. Selected employee is visually distinct from other markers
+**Plans**: 2 plans
+
+Plans:
+- [ ] 05-01-PLAN.md — Store, utility, and CSS foundations (mapMode, googleMapsUrl, marker enhancement, styles)
+- [ ] 05-02-PLAN.md — Component wiring (grayscale toggle, distance lines, Google Maps links, click-to-select)
+
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 2.1 -> 3 -> 4
+Phases execute in numeric order: 1 -> 2 -> 2.1 -> 3 -> 4 -> 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -117,6 +133,7 @@ Phases execute in numeric order: 1 -> 2 -> 2.1 -> 3 -> 4
 | 2.1 Security & Privacy Hardening | 5/5 | Complete | 2026-02-07 |
 | 3. Distance & Team Intelligence | 0/TBD | Not started | - |
 | 4. Export & Polish | 0/TBD | Not started | - |
+| 5. Better Visualizations | 0/2 | Not started | - |
 
 ---
 *Roadmap created: 2026-02-06*
