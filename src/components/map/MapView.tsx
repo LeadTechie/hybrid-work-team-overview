@@ -19,7 +19,7 @@ const INITIAL_ZOOM = 6;
 
 export function MapView() {
   const { offices } = useOfficeStore();
-  const { colorBy, selectedEmployeeId, mapMode } = useFilterStore();
+  const { colorBy, selectedEmployeeId, mapMode, disableClustering } = useFilterStore();
 
   // Get filtered employees (already filtered for geocode success)
   const filteredEmployees = useFilteredEmployees();
@@ -63,17 +63,28 @@ export function MapView() {
         <OfficeMarker key={office.id} office={office} />
       ))}
 
-      {/* Employee markers - clustered for performance */}
-      <MarkerClusterGroup chunkedLoading>
-        {filteredEmployees.map((employee) => (
+      {/* Employee markers - clustered or individual based on setting */}
+      {disableClustering ? (
+        filteredEmployees.map((employee) => (
           <EmployeeMarker
             key={employee.id}
             employee={employee}
             colorBy={colorBy}
             isHighlighted={employee.id === selectedEmployeeId}
           />
-        ))}
-      </MarkerClusterGroup>
+        ))
+      ) : (
+        <MarkerClusterGroup chunkedLoading>
+          {filteredEmployees.map((employee) => (
+            <EmployeeMarker
+              key={employee.id}
+              employee={employee}
+              colorBy={colorBy}
+              isHighlighted={employee.id === selectedEmployeeId}
+            />
+          ))}
+        </MarkerClusterGroup>
+      )}
 
       {/* Legend showing color meanings */}
       <MapLegend />

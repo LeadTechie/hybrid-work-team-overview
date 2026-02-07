@@ -14,6 +14,7 @@ interface FilterState {
   mapMode: MapMode;
   selectedEmployeeId: string | null;
   mapZoomMode: MapZoomMode | null;
+  disableClustering: boolean;
 
   setTeamFilter: (team: string | null) => void;
   setDepartmentFilter: (dept: string | null) => void;
@@ -23,6 +24,7 @@ interface FilterState {
   setMapMode: (mode: MapMode) => void;
   setSelectedEmployeeId: (id: string | null) => void;
   setMapZoomMode: (mode: MapZoomMode | null) => void;
+  setDisableClustering: (value: boolean) => void;
   clearFilters: () => void;
 }
 
@@ -35,6 +37,7 @@ export const useFilterStore = create<FilterState>((set) => ({
   mapMode: 'normal',
   selectedEmployeeId: null,
   mapZoomMode: null,
+  disableClustering: false,
 
   setTeamFilter: (team) => set({ teamFilter: team }),
   setDepartmentFilter: (dept) => set({ departmentFilter: dept }),
@@ -44,6 +47,7 @@ export const useFilterStore = create<FilterState>((set) => ({
   setMapMode: (mode) => set({ mapMode: mode }),
   setSelectedEmployeeId: (id) => set({ selectedEmployeeId: id }),
   setMapZoomMode: (mode) => set({ mapZoomMode: mode }),
+  setDisableClustering: (value) => set({ disableClustering: value }),
   clearFilters: () =>
     set({
       teamFilter: null,

@@ -123,6 +123,18 @@ export function FilterPanel() {
           B&W map mode
         </label>
       </div>
+      <div className="map-mode-toggle">
+        <label>
+          <input
+            type="checkbox"
+            checked={useFilterStore((s) => s.disableClustering)}
+            onChange={(e) =>
+              useFilterStore.getState().setDisableClustering(e.target.checked)
+            }
+          />
+          Don't group people
+        </label>
+      </div>
     </div>
   );
 }
