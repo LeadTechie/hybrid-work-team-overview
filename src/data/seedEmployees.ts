@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { fakerDE as faker } from '@faker-js/faker';
 import type { Employee } from '../types/employee';
 import { geocodeByPostcode } from '../services/localGeocodingService';
+import { GERMAN_POSTCODES } from './germanPostcodes';
 
 const TEAMS = [
   'Platform',
@@ -24,10 +25,13 @@ const ROLES = [
   'Designer',
 ];
 
+// Get array of valid German postcodes for random selection
+const VALID_POSTCODES = Object.keys(GERMAN_POSTCODES);
+
 /**
  * Generate 45 German employees with realistic data.
  * Uses fakerDE for German names and addresses.
- * Uses local geocoding for postcode-based coordinates.
+ * Uses valid postcodes from bundled database to ensure geocoding always succeeds.
  */
 export function generateSeedEmployees(): Employee[] {
   // Set seed for reproducible data
@@ -38,9 +42,10 @@ export function generateSeedEmployees(): Employee[] {
   for (let i = 0; i < 45; i++) {
     // Generate realistic German address components
     const streetAddress = faker.location.streetAddress();
-    const postcode = faker.location.zipCode();
+    // Pick from valid postcodes to ensure geocoding always works
+    const postcode = faker.helpers.arrayElement(VALID_POSTCODES);
 
-    // Use local geocoding for coordinates
+    // Use local geocoding for coordinates (will always succeed with valid postcodes)
     const geocodeResult = geocodeByPostcode(postcode);
 
     const employee: Employee = {
