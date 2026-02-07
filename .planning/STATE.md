@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-06)
 ## Current Position
 
 Phase: 5 of 5 (Better Visualizations)
-Plan: 1 of 2 in current phase
-Status: In progress
-Last activity: 2026-02-07 - Completed 05-01-PLAN.md
+Plan: 2 of 2 in current phase
+Status: Phase complete
+Last activity: 2026-02-07 - Completed 05-02-PLAN.md
 
-Progress: [###################-] 87% (13/15 plans completed)
+Progress: [###################-] 93% (14/15 plans completed)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 13
+- Total plans completed: 14
 - Average duration: 3 min
-- Total execution time: 37 min
+- Total execution time: 42 min
 
 **By Phase:**
 
@@ -30,10 +30,10 @@ Progress: [###################-] 87% (13/15 plans completed)
 | 01-foundation | 3 | 15 min | 5 min |
 | 02-map-filtering | 4 | 8 min | 2 min |
 | 02.1-security-privacy-hardening | 5 | 12 min | 2.4 min |
-| 05-better-visualizations | 1 | 2 min | 2 min |
+| 05-better-visualizations | 2 | 7 min | 3.5 min |
 
 **Recent Trend:**
-- Last 5 plans: 02.1-02 (2 min), 02.1-03 (2 min), 02.1-04 (3 min), 02.1-05 (4 min), 05-01 (2 min)
+- Last 5 plans: 02.1-03 (2 min), 02.1-04 (3 min), 02.1-05 (4 min), 05-01 (2 min), 05-02 (5 min)
 - Trend: Stable
 
 *Updated after each plan completion*
@@ -81,6 +81,10 @@ Recent decisions affecting current work:
 - [02.1-05]: Tables display postcode, street, city columns instead of address
 - [05-01]: mapMode not reset by clearFilters (visual preference, same as colorBy)
 - [05-01]: employee-marker-selected className for CSS pulse animation targeting
+- [05-02]: Closest office replaces assigned office for Google Maps navigation link
+- [05-02]: Employee marker size 32px default / 42px highlighted for visibility
+- [05-02]: fitBounds with maxZoom:10 for zoom-to-fit on employee select
+- [05-02]: MapController receives offices prop for explicit data flow
 
 ### Pending Todos
 
@@ -98,8 +102,8 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-07T12:48:42Z
-Stopped at: Completed 05-01-PLAN.md - Ready for 05-02 component wiring
+Last session: 2026-02-07T14:27:00Z
+Stopped at: Completed 05-02-PLAN.md - Phase 5 complete
 Resume file: None
 
 ---
