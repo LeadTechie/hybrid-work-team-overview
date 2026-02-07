@@ -1,5 +1,12 @@
 import { z } from 'zod';
 
+// Data limits for the application
+export const DATA_LIMITS = {
+  MAX_EMPLOYEES: 1000,
+  MAX_OFFICES: 20,
+  MAX_FILE_SIZE_MB: 5,
+} as const;
+
 // Zod schemas for validation
 export const OfficeSchema = z.object({
   name: z.string().min(1, 'Name is required'),
