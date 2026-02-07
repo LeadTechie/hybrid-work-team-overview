@@ -11,6 +11,8 @@ import { DataSummary } from './components/DataSummary';
 import { ViewTabs } from './components/ViewTabs';
 import { OfficesTable } from './components/tables/OfficesTable';
 import { EmployeesTable } from './components/tables/EmployeesTable';
+import { PrivacyBadge } from './components/PrivacyBadge';
+import { ClearDataButton } from './components/ClearDataButton';
 
 type ViewTab = 'map' | 'offices' | 'employees';
 
@@ -67,6 +69,10 @@ function App() {
           <EmployeeSearch />
           <FilterPanel />
           <DataSummary />
+          <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '12px', paddingTop: '16px' }}>
+            <PrivacyBadge />
+            <ClearDataButton />
+          </div>
         </aside>
         <main className={activeTab === 'map' ? 'map-container' : 'table-container'}>
           {activeTab === 'map' && <MapView />}
