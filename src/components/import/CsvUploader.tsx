@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { DATA_LIMITS } from '../../services/validationService';
 
 interface CsvUploaderProps {
   onCsvChange: (csvText: string) => void;
@@ -83,7 +84,16 @@ export function CsvUploader({ onCsvChange, placeholder = 'Paste CSV data here...
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     if (acceptedFiles.length > 0) {
-      handleFileRead(acceptedFiles[0]);
+      const file = acceptedFiles[0];
+
+      // Check file size limit
+      const maxBytes = DATA_LIMITS.MAX_FILE_SIZE_MB * 1024 * 1024;
+      if (file.size > maxBytes) {
+        alert(`File too large. Maximum size is ${DATA_LIMITS.MAX_FILE_SIZE_MB}MB.`);
+        return;
+      }
+
+      handleFileRead(file);
     }
   }, [handleFileRead]);
 
