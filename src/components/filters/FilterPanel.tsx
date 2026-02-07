@@ -19,7 +19,9 @@ export function FilterPanel() {
   const setTeamFilter = useFilterStore((s) => s.setTeamFilter);
   const setDepartmentFilter = useFilterStore((s) => s.setDepartmentFilter);
   const setOfficeFilter = useFilterStore((s) => s.setOfficeFilter);
+  const mapMode = useFilterStore((s) => s.mapMode);
   const setColorBy = useFilterStore((s) => s.setColorBy);
+  const setMapMode = useFilterStore((s) => s.setMapMode);
   const clearFilters = useFilterStore((s) => s.clearFilters);
 
   // Derive unique teams from employees
@@ -107,6 +109,20 @@ export function FilterPanel() {
       <button type="button" className="clear-filters-btn" onClick={clearFilters}>
         Clear Filters
       </button>
+
+      {/* Map Settings */}
+      <div className="map-mode-toggle">
+        <label>
+          <input
+            type="checkbox"
+            checked={mapMode === 'grayscale'}
+            onChange={(e) =>
+              setMapMode(e.target.checked ? 'grayscale' : 'normal')
+            }
+          />
+          B&W map mode
+        </label>
+      </div>
     </div>
   );
 }
