@@ -2,7 +2,7 @@
  * Geocoding service using Geoapify API
  * - Rate limited to 5 requests/second (free tier)
  * - Restricted to Germany (countrycode:de)
- * - Graceful error handling - failed geocodes don't block batch
+ * - API key provided by user at runtime (never bundled)
  */
 
 export interface GeocodeResult {
@@ -21,6 +21,45 @@ export interface GeocodeProgress {
 
 const GEOAPIFY_ENDPOINT = 'https://api.geoapify.com/v1/geocode/search';
 const RATE_LIMIT_DELAY_MS = 200; // 5 requests per second = 200ms between requests
+const API_KEY_STORAGE_KEY = 'geoapify_api_key';
+
+// ============================================================
+// API Key Management - stored in sessionStorage (cleared on tab close)
+// ============================================================
+
+/**
+ * Get the stored API key from sessionStorage.
+ * Returns null if no key is stored.
+ */
+export function getApiKey(): string | null {
+  return sessionStorage.getItem(API_KEY_STORAGE_KEY);
+}
+
+/**
+ * Store an API key in sessionStorage.
+ * Key will be cleared when the browser tab is closed.
+ */
+export function setApiKey(key: string): void {
+  sessionStorage.setItem(API_KEY_STORAGE_KEY, key);
+}
+
+/**
+ * Remove the stored API key from sessionStorage.
+ */
+export function clearApiKey(): void {
+  sessionStorage.removeItem(API_KEY_STORAGE_KEY);
+}
+
+/**
+ * Check if an API key is currently stored.
+ */
+export function hasApiKey(): boolean {
+  return !!getApiKey();
+}
+
+// ============================================================
+// Geocoding Functions
+// ============================================================
 
 /**
  * Geocode a single address using Geoapify
@@ -80,7 +119,7 @@ function delay(ms: number): Promise<void> {
 }
 
 /**
- * Batch geocode multiple addresses
+ * Batch geocode multiple addresses with explicit API key.
  * - Processes sequentially with rate limiting
  * - Calls onProgress for each address
  * - Returns results in same order as input
@@ -88,19 +127,15 @@ function delay(ms: number): Promise<void> {
  */
 export async function batchGeocode(
   addresses: string[],
+  apiKey: string,
   onProgress?: (progress: GeocodeProgress) => void
 ): Promise<GeocodeResult[]> {
-  // Read API key from environment (safely handle missing import.meta.env)
-  const apiKey = typeof import.meta !== 'undefined' && import.meta.env
-    ? import.meta.env.VITE_GEOAPIFY_KEY
-    : undefined;
-
-  // If no API key, return all as failed
+  // If no API key provided, return all as failed
   if (!apiKey) {
     return addresses.map((address) => ({
       address,
       status: 'failed' as const,
-      error: 'No API key configured',
+      error: 'No API key provided',
     }));
   }
 
@@ -139,9 +174,28 @@ export async function batchGeocode(
 }
 
 /**
- * Geocode a single address (convenience wrapper)
+ * Convenience wrapper that uses stored key from sessionStorage.
+ * Use this when the user has already provided their API key via the consent modal.
+ */
+export async function batchGeocodeWithStoredKey(
+  addresses: string[],
+  onProgress?: (progress: GeocodeProgress) => void
+): Promise<GeocodeResult[]> {
+  const apiKey = getApiKey();
+  if (!apiKey) {
+    return addresses.map((address) => ({
+      address,
+      status: 'failed' as const,
+      error: 'No API key stored. Please enable accurate geocoding first.',
+    }));
+  }
+  return batchGeocode(addresses, apiKey, onProgress);
+}
+
+/**
+ * Geocode a single address using stored API key (convenience wrapper)
  */
 export async function geocodeSingle(address: string): Promise<GeocodeResult> {
-  const results = await batchGeocode([address]);
+  const results = await batchGeocodeWithStoredKey([address]);
   return results[0];
 }
