@@ -14,6 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [ ] **Phase 1: Foundation & Data Pipeline** - CSV import, geocoding, seed data generation
 - [ ] **Phase 2: Map & Filtering** - Germany map with markers, color-coding, filtering by team/department/office
+- [ ] **Phase 2.1: Security & Privacy Hardening** - Local postcode geocoding, encrypted localStorage, clear data button, CSP headers (INSERTED)
 - [ ] **Phase 3: Distance & Team Intelligence** - Distance calculations, nearest office, team co-location analysis
 - [ ] **Phase 4: Export & Polish** - CSV/PDF/Excel export, production hardening
 
@@ -54,9 +55,30 @@ Plans:
 - [ ] 02-03-PLAN.md - Create filter panel and employee search with debounce
 - [ ] 02-04-PLAN.md - Integration, legend, layout, and verification
 
+### Phase 2.1: Security & Privacy Hardening (INSERTED)
+**Goal**: All data processing happens locally by default with encrypted storage and user control over data
+**Depends on**: Phase 2
+**Requirements**: Based on security-fixes.md
+**Success Criteria** (what must be TRUE):
+  1. Geocoding uses bundled German postcode data (no external API calls by default)
+  2. localStorage is encrypted (employee/office data protected at rest)
+  3. User can clear all stored data via visible button
+  4. CSP headers prevent accidental data leakage
+  5. Privacy badge indicates "all data stays in browser"
+  6. Optional accurate geocoding requires explicit user consent and user-provided API key
+  7. Data limits enforced (1000 employees, 20 offices, 5MB file size)
+**Plans**: 5 plans
+
+Plans:
+- [ ] 02.1-01-PLAN.md - Encrypted storage adapter, data limits, CSP, privacy badge
+- [ ] 02.1-02-PLAN.md - Bundled German postcode data and local geocoding service
+- [ ] 02.1-03-PLAN.md - Integrate encrypted storage into stores, update types for postcode
+- [ ] 02.1-04-PLAN.md - Clear data button, file size limits, seed data migration, CSV updates
+- [ ] 02.1-05-PLAN.md - Accurate geocoding consent modal with user-provided API key
+
 ### Phase 3: Distance & Team Intelligence
 **Goal**: Users can see distances from employees to offices and analyze team co-location impact
-**Depends on**: Phase 2
+**Depends on**: Phase 2.1
 **Requirements**: DIST-01, DIST-02, TEAM-01, TEAM-02, TEAM-03
 **Success Criteria** (what must be TRUE):
   1. User sees straight-line distance (km) from each employee to each office
@@ -86,12 +108,13 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4
+Phases execute in numeric order: 1 -> 2 -> 2.1 -> 3 -> 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Data Pipeline | 0/3 | Planned | - |
-| 2. Map & Filtering | 0/4 | Planned | - |
+| 1. Foundation & Data Pipeline | 3/3 | Complete | - |
+| 2. Map & Filtering | 4/4 | Complete | - |
+| 2.1 Security & Privacy Hardening | 0/5 | Not started | - |
 | 3. Distance & Team Intelligence | 0/TBD | Not started | - |
 | 4. Export & Polish | 0/TBD | Not started | - |
 
