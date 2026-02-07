@@ -108,8 +108,8 @@ function App() {
               </button>
             </div>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-              <ReloadTestDataButton />
               <ClearDataButton />
+              <ReloadTestDataButton />
             </div>
           </div>
         </aside>

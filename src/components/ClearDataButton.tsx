@@ -1,15 +1,22 @@
 import { useEmployeeStore } from '../stores/employeeStore';
 import { useOfficeStore } from '../stores/officeStore';
+import { useFilterStore } from '../stores/filterStore';
 
 export function ClearDataButton() {
   const clearEmployees = useEmployeeStore((state) => state.clearEmployees);
   const clearOffices = useOfficeStore((state) => state.clearOffices);
+  const clearFilters = useFilterStore((state) => state.clearFilters);
 
   const handleClear = () => {
     if (window.confirm('Are you sure you want to delete all data? This cannot be undone.')) {
-      // Clear Zustand stores
+      // Clear Zustand stores (sets isInitialized=false so seed data won't auto-reload)
       clearEmployees();
       clearOffices();
+      clearFilters();
+
+      // Mark as initialized (empty) so the seed-data effect doesn't re-trigger
+      useEmployeeStore.getState().setInitialized(true);
+      useOfficeStore.getState().setInitialized(true);
 
       // Clear all localStorage
       localStorage.clear();
@@ -29,9 +36,6 @@ export function ClearDataButton() {
           names.forEach((name) => caches.delete(name));
         });
       }
-
-      // Force reload to reset app state
-      window.location.reload();
     }
   };
 

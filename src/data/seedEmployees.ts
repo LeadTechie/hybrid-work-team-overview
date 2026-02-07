@@ -29,7 +29,7 @@ const ROLES = [
 const VALID_POSTCODES = Object.keys(GERMAN_POSTCODES);
 
 /**
- * Generate 45 German employees with realistic data.
+ * Generate 100 German employees with realistic data.
  * Uses fakerDE for German names and addresses.
  * Uses valid postcodes from bundled database to ensure geocoding always succeeds.
  */
@@ -39,7 +39,7 @@ export function generateSeedEmployees(): Employee[] {
 
   const employees: Employee[] = [];
 
-  for (let i = 0; i < 45; i++) {
+  for (let i = 0; i < 100; i++) {
     // Generate realistic German address components
     const streetAddress = faker.location.streetAddress();
     // Pick from valid postcodes to ensure geocoding always works

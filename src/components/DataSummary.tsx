@@ -63,8 +63,8 @@ const styles = {
 };
 
 export function DataSummary() {
-  const { offices, clearOffices } = useOfficeStore();
-  const { employees, clearEmployees } = useEmployeeStore();
+  const { offices } = useOfficeStore();
+  const { employees } = useEmployeeStore();
 
   // Calculate geocode status breakdown
   const officeGeocodeStats = {
@@ -81,13 +81,6 @@ export function DataSummary() {
 
   const totalPending = officeGeocodeStats.pending + employeeGeocodeStats.pending;
   const totalFailed = officeGeocodeStats.failed + employeeGeocodeStats.failed;
-
-  const handleClearAll = () => {
-    if (window.confirm('Are you sure you want to clear all data? This cannot be undone.')) {
-      clearOffices();
-      clearEmployees();
-    }
-  };
 
   return (
     <div style={styles.container}>
@@ -114,27 +107,6 @@ export function DataSummary() {
               {totalFailed} failed geocode
             </span>
           )}
-        </div>
-      )}
-
-      {(offices.length > 0 || employees.length > 0) && (
-        <div style={{ textAlign: 'center' as const }}>
-          <button
-            style={styles.clearButton}
-            onClick={handleClearAll}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = '#fee2e2';
-              e.currentTarget.style.borderColor = '#ef4444';
-              e.currentTarget.style.color = '#ef4444';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = '#fff';
-              e.currentTarget.style.borderColor = '#ddd';
-              e.currentTarget.style.color = '#666';
-            }}
-          >
-            Clear All Data
-          </button>
         </div>
       )}
     </div>
