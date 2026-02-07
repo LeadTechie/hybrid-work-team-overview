@@ -15,11 +15,14 @@ import { PrivacyBadge } from './components/PrivacyBadge';
 import { ClearDataButton } from './components/ClearDataButton';
 import { ReloadTestDataButton } from './components/ReloadTestDataButton';
 import { AccurateGeocodingButton } from './components/AccurateGeocodingButton';
+import { ImportPanel } from './components/import/ImportPanel';
 
 type ViewTab = 'map' | 'offices' | 'employees';
+type ImportModalTab = 'offices' | 'employees' | null;
 
 function App() {
   const [activeTab, setActiveTab] = useState<ViewTab>('map');
+  const [importModal, setImportModal] = useState<ImportModalTab>(null);
 
   const {
     offices,
@@ -75,6 +78,36 @@ function App() {
             <PrivacyBadge />
             <AccurateGeocodingButton />
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+              <button
+                onClick={() => setImportModal('employees')}
+                style={{
+                  padding: '8px 16px',
+                  backgroundColor: '#e3f2fd',
+                  color: '#1565c0',
+                  border: '1px solid #90caf9',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  fontSize: '13px',
+                }}
+              >
+                Load People
+              </button>
+              <button
+                onClick={() => setImportModal('offices')}
+                style={{
+                  padding: '8px 16px',
+                  backgroundColor: '#e8f5e9',
+                  color: '#2e7d32',
+                  border: '1px solid #a5d6a7',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  fontSize: '13px',
+                }}
+              >
+                Load Offices
+              </button>
+            </div>
+            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               <ReloadTestDataButton />
               <ClearDataButton />
             </div>
@@ -86,6 +119,34 @@ function App() {
           {activeTab === 'employees' && <EmployeesTable />}
         </main>
       </div>
+
+      {/* Import modal overlay */}
+      {importModal && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 2000,
+          }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setImportModal(null);
+          }}
+        >
+          <div style={{ width: '600px', maxHeight: '80vh', overflow: 'auto', background: '#fff', borderRadius: '12px' }}>
+            <ImportPanel
+              initialTab={importModal}
+              onClose={() => setImportModal(null)}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -562,7 +562,7 @@ const TEAMS = [
 ];
 
 const OFFICES = [
-  { name: 'Frankfurt HQ', city: 'Frankfurt am Main', address: 'Neue Mainzer Str. 52-58, 60311 Frankfurt am Main' },
+  { name: 'Frankfurt', city: 'Frankfurt am Main', address: 'Neue Mainzer Str. 52-58, 60311 Frankfurt am Main' },
   { name: 'Berlin Office', city: 'Berlin', address: 'Unter den Linden 21, 10117 Berlin' },
   { name: 'Munich Office', city: 'Munich', address: 'Maximilianstr. 35, 80539 Muenchen' },
   { name: 'Hamburg Office', city: 'Hamburg', address: 'Jungfernstieg 7, 20354 Hamburg' },
@@ -571,7 +571,7 @@ const OFFICES = [
 
 // Pre-geocoded office coordinates (from German PLZ dataset)
 const OFFICE_COORDS = {
-  'Frankfurt HQ': { lat: 50.1109, lon: 8.6821 },
+  'Frankfurt': { lat: 50.1109, lon: 8.6821 },
   'Berlin Office': { lat: 52.5200, lon: 13.4050 },
   'Munich Office': { lat: 48.1351, lon: 11.5820 },
   'Hamburg Office': { lat: 53.5511, lon: 9.9937 },

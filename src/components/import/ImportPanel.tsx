@@ -102,9 +102,14 @@ const styles = {
   },
 };
 
-export function ImportPanel() {
+interface ImportPanelProps {
+  initialTab?: ImportType;
+  onClose?: () => void;
+}
+
+export function ImportPanel({ initialTab, onClose }: ImportPanelProps = {}) {
   const [mode, setMode] = useState<ImportMode>('idle');
-  const [importType, setImportType] = useState<ImportType>('offices');
+  const [importType, setImportType] = useState<ImportType>(initialTab ?? 'offices');
   const [csvText, setCsvText] = useState('');
   const [parseResult, setParseResult] = useState<CsvParseResult<Office | Employee> | null>(null);
   const [importResult, setImportResult] = useState<ImportResult | null>(null);
@@ -333,7 +338,25 @@ export function ImportPanel() {
 
   return (
     <div style={styles.container}>
-      <h2 style={styles.title}>Import Data</h2>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h2 style={styles.title}>Import Data</h2>
+        {onClose && (
+          <button
+            onClick={onClose}
+            style={{
+              background: 'none',
+              border: 'none',
+              fontSize: '20px',
+              cursor: 'pointer',
+              color: '#666',
+              padding: '4px 8px',
+            }}
+            title="Close"
+          >
+            &times;
+          </button>
+        )}
+      </div>
       {mode === 'idle' && renderIdle()}
       {mode === 'preview' && renderPreview()}
       {mode === 'done' && renderDone()}

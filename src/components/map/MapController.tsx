@@ -3,6 +3,7 @@ import { useMap } from 'react-leaflet';
 import * as L from 'leaflet';
 import type { Employee } from '../../types/employee';
 import type { Office } from '../../types/office';
+import { useFilterStore } from '../../stores/filterStore';
 
 interface MapControllerProps {
   selectedEmployee: Employee | null;
@@ -11,15 +12,26 @@ interface MapControllerProps {
 
 /**
  * Controller component that handles programmatic map navigation.
- * When an employee is selected, zooms out to fit the employee and all
- * offices in view so distance lines are fully visible.
+ * Single click: zooms in to the employee (distances visible at closer range).
+ * Double click: zooms out to fit the employee and all offices in view.
  */
 export function MapController({ selectedEmployee, offices }: MapControllerProps) {
   const map = useMap();
+  const mapZoomMode = useFilterStore((s) => s.mapZoomMode);
+  const setMapZoomMode = useFilterStore((s) => s.setMapZoomMode);
 
   useEffect(() => {
-    if (selectedEmployee?.coords) {
-      // Build bounds containing the employee and all offices
+    if (!selectedEmployee?.coords || !mapZoomMode) return;
+
+    if (mapZoomMode === 'zoomIn') {
+      // Single click: zoom in to the employee
+      map.flyTo(
+        [selectedEmployee.coords.lat, selectedEmployee.coords.lon],
+        12,
+        { duration: 1 }
+      );
+    } else if (mapZoomMode === 'zoomOut') {
+      // Double click: zoom out to fit employee + all offices
       const points: L.LatLngExpression[] = [
         [selectedEmployee.coords.lat, selectedEmployee.coords.lon],
       ];
@@ -38,16 +50,17 @@ export function MapController({ selectedEmployee, offices }: MapControllerProps)
           duration: 1.5,
         });
       } else {
-        // Fallback: only the employee, no offices with coords
         map.flyTo(
           [selectedEmployee.coords.lat, selectedEmployee.coords.lon],
-          10,
+          8,
           { duration: 1.5 }
         );
       }
     }
-  }, [selectedEmployee, offices, map]);
 
-  // Controller component - no visual output
+    // Clear zoom mode after applying
+    setMapZoomMode(null);
+  }, [selectedEmployee, mapZoomMode, offices, map, setMapZoomMode]);
+
   return null;
 }

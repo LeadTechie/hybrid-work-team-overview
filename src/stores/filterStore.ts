@@ -3,6 +3,8 @@ import { create } from 'zustand';
 export type ColorByOption = 'team' | 'department' | 'assignedOffice';
 export type MapMode = 'normal' | 'grayscale';
 
+export type MapZoomMode = 'zoomIn' | 'zoomOut';
+
 interface FilterState {
   teamFilter: string | null;
   departmentFilter: string | null;
@@ -11,6 +13,7 @@ interface FilterState {
   colorBy: ColorByOption;
   mapMode: MapMode;
   selectedEmployeeId: string | null;
+  mapZoomMode: MapZoomMode | null;
 
   setTeamFilter: (team: string | null) => void;
   setDepartmentFilter: (dept: string | null) => void;
@@ -19,6 +22,7 @@ interface FilterState {
   setColorBy: (colorBy: ColorByOption) => void;
   setMapMode: (mode: MapMode) => void;
   setSelectedEmployeeId: (id: string | null) => void;
+  setMapZoomMode: (mode: MapZoomMode | null) => void;
   clearFilters: () => void;
 }
 
@@ -30,6 +34,7 @@ export const useFilterStore = create<FilterState>((set) => ({
   colorBy: 'team',
   mapMode: 'normal',
   selectedEmployeeId: null,
+  mapZoomMode: null,
 
   setTeamFilter: (team) => set({ teamFilter: team }),
   setDepartmentFilter: (dept) => set({ departmentFilter: dept }),
@@ -38,6 +43,7 @@ export const useFilterStore = create<FilterState>((set) => ({
   setColorBy: (colorBy) => set({ colorBy }),
   setMapMode: (mode) => set({ mapMode: mode }),
   setSelectedEmployeeId: (id) => set({ selectedEmployeeId: id }),
+  setMapZoomMode: (mode) => set({ mapZoomMode: mode }),
   clearFilters: () =>
     set({
       teamFilter: null,
@@ -45,6 +51,7 @@ export const useFilterStore = create<FilterState>((set) => ({
       officeFilter: null,
       searchQuery: '',
       selectedEmployeeId: null,
+      mapZoomMode: null,
       // Note: colorBy and mapMode are intentionally NOT reset (visual preferences, not filters)
     }),
 }));

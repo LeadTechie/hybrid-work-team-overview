@@ -17,6 +17,19 @@ export function ClearDataButton() {
       // Clear sessionStorage (API key if any)
       sessionStorage.clear();
 
+      // Clear all cookies
+      document.cookie.split(';').forEach((cookie) => {
+        const name = cookie.split('=')[0].trim();
+        document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+      });
+
+      // Clear caches if available
+      if ('caches' in window) {
+        caches.keys().then((names) => {
+          names.forEach((name) => caches.delete(name));
+        });
+      }
+
       // Force reload to reset app state
       window.location.reload();
     }

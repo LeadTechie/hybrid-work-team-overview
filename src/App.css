@@ -289,6 +289,26 @@
   color: #4b5563;
 }
 
+.map-legend-item-clickable {
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: background-color 0.15s;
+}
+
+.map-legend-item-clickable:hover {
+  background-color: #f3f4f6;
+}
+
+.map-legend-item-active {
+  background-color: #e0e7ff;
+  font-weight: 600;
+}
+
+.map-legend-item-active .map-legend-label {
+  color: #1e40af;
+}
+
 /* Data Summary adjustments for sidebar */
 .sidebar .data-summary-container,
 .sidebar > div:last-child {

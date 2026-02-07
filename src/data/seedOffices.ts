@@ -10,7 +10,7 @@ export function generateSeedOffices(): Office[] {
   return [
     {
       id: uuidv4(),
-      name: 'Frankfurt HQ',
+      name: 'Frankfurt',
       postcode: '60311',
       street: 'Neue Mainzer Str. 52-58',
       city: 'Frankfurt am Main',
