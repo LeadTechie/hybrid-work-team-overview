@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-06)
 
 **Core value:** Employees can see which office is closest to them, and leadership can identify team composition changes that would reduce overall commute burden.
-**Current focus:** Phase 3 - Distance & Team Intelligence
+**Current focus:** Phase 5 - Better Visualizations
 
 ## Current Position
 
-Phase: 3 of 4 (Distance & Team Intelligence)
-Plan: 0 of TBD in current phase
-Status: Not planned
-Last activity: 2026-02-07 - Completed Phase 2.1 (Security & Privacy Hardening)
+Phase: 5 of 5 (Better Visualizations)
+Plan: 1 of 2 in current phase
+Status: In progress
+Last activity: 2026-02-07 - Completed 05-01-PLAN.md
 
-Progress: [##################--] 85% (12/14 plans estimated)
+Progress: [###################-] 87% (13/15 plans completed)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 12
+- Total plans completed: 13
 - Average duration: 3 min
-- Total execution time: 35 min
+- Total execution time: 37 min
 
 **By Phase:**
 
@@ -30,9 +30,10 @@ Progress: [##################--] 85% (12/14 plans estimated)
 | 01-foundation | 3 | 15 min | 5 min |
 | 02-map-filtering | 4 | 8 min | 2 min |
 | 02.1-security-privacy-hardening | 5 | 12 min | 2.4 min |
+| 05-better-visualizations | 1 | 2 min | 2 min |
 
 **Recent Trend:**
-- Last 5 plans: 02.1-01 (1 min), 02.1-02 (2 min), 02.1-03 (2 min), 02.1-04 (3 min), 02.1-05 (4 min)
+- Last 5 plans: 02.1-02 (2 min), 02.1-03 (2 min), 02.1-04 (3 min), 02.1-05 (4 min), 05-01 (2 min)
 - Trend: Stable
 
 *Updated after each plan completion*
@@ -78,6 +79,8 @@ Recent decisions affecting current work:
 - [02.1-05]: Seed employees use valid postcodes from bundled database (not faker random)
 - [02.1-05]: AccurateGeocodingButton in sidebar triggers consent flow
 - [02.1-05]: Tables display postcode, street, city columns instead of address
+- [05-01]: mapMode not reset by clearFilters (visual preference, same as colorBy)
+- [05-01]: employee-marker-selected className for CSS pulse animation targeting
 
 ### Pending Todos
 
@@ -91,11 +94,12 @@ None yet.
 ### Roadmap Evolution
 
 - Phase 2.1 inserted after Phase 2: Security & Privacy Hardening (URGENT) - local postcode geocoding, encrypted localStorage, clear data button, CSP headers, optional accurate geocoding with consent
+- Phase 5 added: Better Visualizations - Map B&W toggle, distance lines on employee click, Google Maps navigation links
 
 ## Session Continuity
 
-Last session: 2026-02-07T10:20:00Z
-Stopped at: Completed Phase 2.1 - Ready for Phase 3 planning
+Last session: 2026-02-07T12:48:42Z
+Stopped at: Completed 05-01-PLAN.md - Ready for 05-02 component wiring
 Resume file: None
 
 ---
