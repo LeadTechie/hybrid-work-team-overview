@@ -24,11 +24,28 @@ export function EmployeesTable() {
   const columns = useMemo((): Column<EmployeeWithDistances>[] => {
     const baseColumns: Column<EmployeeWithDistances>[] = [
       { key: 'name', label: 'Name', sortable: true },
+      { key: 'postcode', label: 'Postcode', sortable: true },
+      {
+        key: 'street',
+        label: 'Street',
+        sortable: true,
+        render: (emp) => emp.street || '—',
+      },
+      {
+        key: 'city',
+        label: 'City',
+        sortable: true,
+        render: (emp) => emp.city || '—',
+      },
       { key: 'team', label: 'Team', sortable: true },
       { key: 'department', label: 'Department', sortable: true },
       { key: 'role', label: 'Role', sortable: true },
-      { key: 'assignedOffice', label: 'Assigned Office', sortable: true },
-      { key: 'address', label: 'Address', sortable: true },
+      {
+        key: 'assignedOffice',
+        label: 'Assigned Office',
+        sortable: true,
+        render: (emp) => emp.assignedOffice || '—',
+      },
       {
         key: 'geocodeStatus',
         label: 'Status',

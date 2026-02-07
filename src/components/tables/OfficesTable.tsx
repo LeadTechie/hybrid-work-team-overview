@@ -4,8 +4,19 @@ import type { Office } from '../../types/office';
 
 const columns: Column<Office>[] = [
   { key: 'name', label: 'Name', sortable: true },
-  { key: 'city', label: 'City', sortable: true },
-  { key: 'address', label: 'Address', sortable: true },
+  { key: 'postcode', label: 'Postcode', sortable: true },
+  {
+    key: 'street',
+    label: 'Street',
+    sortable: true,
+    render: (office) => office.street || '—',
+  },
+  {
+    key: 'city',
+    label: 'City',
+    sortable: true,
+    render: (office) => office.city || '—',
+  },
   {
     key: 'geocodeStatus',
     label: 'Status',
