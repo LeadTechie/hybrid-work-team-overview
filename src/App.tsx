@@ -14,6 +14,7 @@ import { EmployeesTable } from './components/tables/EmployeesTable';
 import { PrivacyBadge } from './components/PrivacyBadge';
 import { ClearDataButton } from './components/ClearDataButton';
 import { ReloadTestDataButton } from './components/ReloadTestDataButton';
+import { AccurateGeocodingButton } from './components/AccurateGeocodingButton';
 
 type ViewTab = 'map' | 'offices' | 'employees';
 
@@ -72,6 +73,7 @@ function App() {
           <DataSummary />
           <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '12px', paddingTop: '16px' }}>
             <PrivacyBadge />
+            <AccurateGeocodingButton />
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               <ReloadTestDataButton />
               <ClearDataButton />
