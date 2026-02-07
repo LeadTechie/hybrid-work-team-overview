@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { Employee } from '../types/employee';
+import { encryptedStorage } from '../services/encryptedStorage';
 
 interface EmployeeState {
   employees: Employee[];
@@ -47,6 +48,7 @@ export const useEmployeeStore = create<EmployeeState>()(
     }),
     {
       name: 'employee-storage',
+      storage: encryptedStorage,
     }
   )
 );

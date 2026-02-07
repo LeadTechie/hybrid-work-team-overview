@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { Office } from '../types/office';
+import { encryptedStorage } from '../services/encryptedStorage';
 
 interface OfficeState {
   offices: Office[];
@@ -47,6 +48,7 @@ export const useOfficeStore = create<OfficeState>()(
     }),
     {
       name: 'office-storage',
+      storage: encryptedStorage,
     }
   )
 );
