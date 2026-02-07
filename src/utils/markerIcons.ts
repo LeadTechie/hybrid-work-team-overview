@@ -11,7 +11,7 @@ export function createEmployeeIcon(
   color: string,
   isHighlighted = false
 ): L.DivIcon {
-  const size = isHighlighted ? 35 : 25;
+  const size = isHighlighted ? 42 : 32;
   const strokeWidth = isHighlighted ? 3 : 2;
 
   return L.divIcon({

@@ -6,6 +6,7 @@ import { useOfficeStore } from '../../stores/officeStore';
 import { getColorForEmployee } from '../../utils/markerColors';
 import { createEmployeeIcon } from '../../utils/markerIcons';
 import { buildGoogleMapsDirectionsUrl } from '../../utils/googleMapsUrl';
+import { calculateDistance, formatDistance } from '../../utils/distance';
 
 interface EmployeeMarkerProps {
   employee: Employee;
@@ -33,11 +34,33 @@ function EmployeeMarkerComponent({
     [color, isHighlighted]
   );
 
-  // Find assigned office for Google Maps link
-  const assignedOffice = useMemo(() => {
-    if (!employee.assignedOffice) return null;
-    return offices.find((o) => o.name === employee.assignedOffice) ?? null;
-  }, [employee.assignedOffice, offices]);
+  // Find the closest office by straight-line distance
+  const closestOffice = useMemo(() => {
+    if (!employee.coords) return null;
+    const geocodedOffices = offices.filter(
+      (o) => o.geocodeStatus === 'success' && o.coords
+    );
+    if (geocodedOffices.length === 0) return null;
+
+    let nearest = geocodedOffices[0];
+    let minDist = Infinity;
+
+    for (const office of geocodedOffices) {
+      if (!office.coords) continue;
+      const dist = calculateDistance(
+        employee.coords.lat,
+        employee.coords.lon,
+        office.coords.lat,
+        office.coords.lon
+      );
+      if (dist < minDist) {
+        minDist = dist;
+        nearest = office;
+      }
+    }
+
+    return { office: nearest, distance: minDist };
+  }, [employee.coords, offices]);
 
   return (
     <Marker
@@ -63,18 +86,29 @@ function EmployeeMarkerComponent({
               Department: {employee.department}
             </>
           )}
-          {employee.assignedOffice && (
+          {closestOffice && (
             <>
               <br />
-              Office: {employee.assignedOffice}
+              Closest office: {closestOffice.office.name} (
+              {formatDistance(closestOffice.distance)})
             </>
           )}
-          {assignedOffice?.coords && employee.coords && (
+          {employee.assignedOffice &&
+            closestOffice &&
+            employee.assignedOffice !== closestOffice.office.name && (
+              <>
+                <br />
+                <span style={{ color: '#6b7280', fontSize: '12px' }}>
+                  Assigned: {employee.assignedOffice}
+                </span>
+              </>
+            )}
+          {closestOffice?.office.coords && employee.coords && (
             <div style={{ marginTop: '6px' }}>
               <a
                 href={buildGoogleMapsDirectionsUrl(
                   employee.coords,
-                  assignedOffice.coords
+                  closestOffice.office.coords
                 )}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -84,7 +118,7 @@ function EmployeeMarkerComponent({
                   fontSize: '12px',
                 }}
               >
-                Navigate to {employee.assignedOffice}
+                Navigate to {closestOffice.office.name}
               </a>
             </div>
           )}

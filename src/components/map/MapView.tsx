@@ -51,7 +51,7 @@ export function MapView() {
         className={tileClassName}
       />
 
-      <MapController selectedEmployee={selectedEmployee} />
+      <MapController selectedEmployee={selectedEmployee} offices={geocodedOffices} />
 
       {/* Distance lines from selected employee to all offices */}
       {selectedEmployee && selectedEmployee.coords && (
