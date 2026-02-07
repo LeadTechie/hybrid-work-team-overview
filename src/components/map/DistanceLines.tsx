@@ -1,5 +1,6 @@
 import { Polyline, Tooltip } from 'react-leaflet';
 import { calculateDistance, formatDistance } from '../../utils/distance';
+import { useFilterStore } from '../../stores/filterStore';
 import type { Employee } from '../../types/employee';
 import type { Office } from '../../types/office';
 
@@ -13,6 +14,8 @@ interface DistanceLinesProps {
  * with distance labels at the midpoint of each line.
  */
 export function DistanceLines({ employee, offices }: DistanceLinesProps) {
+  const useRoadDistance = useFilterStore((s) => s.useRoadDistance);
+
   if (!employee.coords) {
     return null;
   }
@@ -53,7 +56,7 @@ export function DistanceLines({ employee, offices }: DistanceLinesProps) {
               direction="center"
               className="distance-tooltip"
             >
-              {formatDistance(dist)} to {office.name}
+              {formatDistance(dist, useRoadDistance)} to {office.name}
             </Tooltip>
           </Polyline>
         );

@@ -16,6 +16,7 @@ export function EmployeesTable() {
   const filteredEmployees = useFilteredEmployees();
   const { offices } = useOfficeStore();
   const { teamFilter, departmentFilter, officeFilter, searchQuery } = useFilterStore();
+  const useRoadDistance = useFilterStore((s) => s.useRoadDistance);
 
   const hasFilters = teamFilter || departmentFilter || officeFilter || searchQuery;
   const baseEmployees = hasFilters ? filteredEmployees : allEmployees;
@@ -61,17 +62,17 @@ export function EmployeesTable() {
     // Add a column for each office showing distance
     const officeColumns: Column<EmployeeWithDistances>[] = offices.map((office) => ({
       key: `distance_${office.id}`,
-      label: `→ ${office.name}`,
+      label: useRoadDistance ? `~> ${office.name}` : `→ ${office.name}`,
       sortable: true,
       render: (emp) => {
         const distanceKey = `distance_${office.id}` as const;
         const distance = emp[distanceKey];
-        return formatDistance(distance);
+        return formatDistance(distance, useRoadDistance);
       },
     }));
 
     return [...baseColumns, ...officeColumns];
-  }, [offices]);
+  }, [offices, useRoadDistance]);
 
   // Enrich employees with distance calculations
   const displayEmployees = useMemo((): EmployeeWithDistances[] => {

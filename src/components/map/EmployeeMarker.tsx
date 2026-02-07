@@ -25,6 +25,7 @@ function EmployeeMarkerComponent({
   }
 
   const offices = useOfficeStore((s) => s.offices);
+  const useRoadDistance = useFilterStore((s) => s.useRoadDistance);
 
   const color = getColorForEmployee(employee, colorBy);
 
@@ -92,13 +93,13 @@ function EmployeeMarkerComponent({
           {officeDistances.length > 0 && (
             <div style={{ marginTop: '8px', borderTop: '1px solid #e5e7eb', paddingTop: '6px' }}>
               <div style={{ fontSize: '11px', fontWeight: 600, color: '#374151', marginBottom: '4px' }}>
-                Distances to offices:
+                {useRoadDistance ? 'Est. road distances:' : 'Distances to offices:'}
               </div>
               {officeDistances.map(({ office, distance }) => (
                 <div key={office.id} style={{ fontSize: '12px', color: '#4b5563', display: 'flex', justifyContent: 'space-between', gap: '8px' }}>
                   <span>{office.name}</span>
                   <span style={{ fontWeight: office === closestOffice?.office ? 600 : 400, color: office === closestOffice?.office ? '#2563eb' : undefined }}>
-                    {formatDistance(distance)}
+                    {formatDistance(distance, useRoadDistance)}
                   </span>
                 </div>
               ))}

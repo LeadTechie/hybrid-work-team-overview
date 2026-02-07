@@ -87,11 +87,11 @@ Plans:
   3. User can view team co-location analysis (aggregate commute impact if team moved to different office)
   4. System suggests potential team transfers to reduce total travel
   5. User can see office coverage metrics (percentage of employees within X km of each office)
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 03-01: TBD
-- [ ] 03-02: TBD
+- [x] 03-01-PLAN.md — Circuity functions, store toggle, info modal
+- [x] 03-02-PLAN.md — FilterPanel checkbox, wire 3 distance consumers
 
 ### Phase 4: Export & Polish
 **Goal**: Users can export data and visualizations for leadership presentations
@@ -131,7 +131,7 @@ Phases execute in numeric order: 1 -> 2 -> 2.1 -> 3 -> 4 -> 5
 | 1. Foundation & Data Pipeline | 3/3 | Complete | - |
 | 2. Map & Filtering | 4/4 | Complete | - |
 | 2.1 Security & Privacy Hardening | 5/5 | Complete | 2026-02-07 |
-| 3. Distance & Team Intelligence | 0/TBD | Not started | - |
+| 3. Distance & Team Intelligence | 2/2 | Complete | 2026-02-07 |
 | 4. Export & Polish | 0/TBD | Not started | - |
 | 5. Better Visualizations | 2/2 | Complete | 2026-02-07 |
 

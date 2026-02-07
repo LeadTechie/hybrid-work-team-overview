@@ -1,7 +1,8 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useEmployeeStore } from '../../stores/employeeStore';
 import { useOfficeStore } from '../../stores/officeStore';
 import { useFilterStore, type ColorByOption } from '../../stores/filterStore';
+import { CircuityInfoModal } from '../CircuityInfoModal';
 
 /**
  * Filter panel with dropdowns for team, department, office filtering
@@ -10,6 +11,7 @@ import { useFilterStore, type ColorByOption } from '../../stores/filterStore';
 export function FilterPanel() {
   const employees = useEmployeeStore((s) => s.employees);
   const offices = useOfficeStore((s) => s.offices);
+  const [showCircuityInfo, setShowCircuityInfo] = useState(false);
 
   const teamFilter = useFilterStore((s) => s.teamFilter);
   const departmentFilter = useFilterStore((s) => s.departmentFilter);
@@ -135,6 +137,46 @@ export function FilterPanel() {
           Don't group people
         </label>
       </div>
+      <div className="map-mode-toggle">
+        <label>
+          <input
+            type="checkbox"
+            checked={useFilterStore((s) => s.useRoadDistance)}
+            onChange={(e) =>
+              useFilterStore.getState().setUseRoadDistance(e.target.checked)
+            }
+          />
+          Est. road distances
+        </label>
+        <button
+          type="button"
+          onClick={() => setShowCircuityInfo(true)}
+          style={{
+            background: 'none',
+            border: '1px solid #d1d5db',
+            borderRadius: '50%',
+            width: '20px',
+            height: '20px',
+            fontSize: '12px',
+            cursor: 'pointer',
+            color: '#6b7280',
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginLeft: '6px',
+            padding: 0,
+            lineHeight: 1,
+            flexShrink: 0,
+          }}
+          title="How road distance estimation works"
+          aria-label="How road distance estimation works"
+        >
+          ?
+        </button>
+      </div>
+      {showCircuityInfo && (
+        <CircuityInfoModal onClose={() => setShowCircuityInfo(false)} />
+      )}
     </div>
   );
 }
