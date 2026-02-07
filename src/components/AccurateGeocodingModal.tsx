@@ -121,19 +121,38 @@ export function AccurateGeocodingModal({
               boxSizing: 'border-box',
             }}
           />
-          <a
-            href="https://www.geoapify.com/get-started-with-maps-api"
-            target="_blank"
-            rel="noopener noreferrer"
+          <div
             style={{
-              display: 'block',
-              marginTop: '8px',
+              marginTop: '12px',
+              padding: '12px',
+              backgroundColor: '#f5f5f5',
+              borderRadius: '6px',
               fontSize: '13px',
-              color: '#1976d2',
             }}
           >
-            Get a free API key (3,000 requests/day)
-          </a>
+            <p style={{ margin: '0 0 8px', fontWeight: 500 }}>
+              To get your own free key (takes ~2 minutes):
+            </p>
+            <ol style={{ margin: 0, paddingLeft: '20px', lineHeight: 1.6 }}>
+              <li>
+                Go to{' '}
+                <a
+                  href="https://myprojects.geoapify.com/register"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: '#1976d2' }}
+                >
+                  myprojects.geoapify.com/register
+                </a>
+              </li>
+              <li>Sign up (email or Google/GitHub)</li>
+              <li>Create a project</li>
+              <li>Copy your API key</li>
+            </ol>
+            <p style={{ margin: '8px 0 0', color: '#666' }}>
+              Free tier: 3,000 requests/day
+            </p>
+          </div>
         </div>
 
         <div style={{ marginBottom: '20px' }}>
