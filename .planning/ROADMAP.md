@@ -12,9 +12,9 @@ This roadmap delivers a browser-based visualization tool for mapping employee ho
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation & Data Pipeline** - CSV import, geocoding, seed data generation
-- [ ] **Phase 2: Map & Filtering** - Germany map with markers, color-coding, filtering by team/department/office
-- [ ] **Phase 2.1: Security & Privacy Hardening** - Local postcode geocoding, encrypted localStorage, clear data button, CSP headers (INSERTED)
+- [x] **Phase 1: Foundation & Data Pipeline** - CSV import, geocoding, seed data generation
+- [x] **Phase 2: Map & Filtering** - Germany map with markers, color-coding, filtering by team/department/office
+- [x] **Phase 2.1: Security & Privacy Hardening** - Local postcode geocoding, encrypted localStorage, clear data button, CSP headers (INSERTED)
 - [ ] **Phase 3: Distance & Team Intelligence** - Distance calculations, nearest office, team co-location analysis
 - [ ] **Phase 4: Export & Polish** - CSV/PDF/Excel export, production hardening
 
@@ -70,11 +70,11 @@ Plans:
 **Plans**: 5 plans
 
 Plans:
-- [ ] 02.1-01-PLAN.md - Encrypted storage adapter, data limits, CSP, privacy badge
-- [ ] 02.1-02-PLAN.md - Bundled German postcode data and local geocoding service
-- [ ] 02.1-03-PLAN.md - Integrate encrypted storage into stores, update types for postcode
-- [ ] 02.1-04-PLAN.md - Clear data button, file size limits, seed data migration, CSV updates
-- [ ] 02.1-05-PLAN.md - Accurate geocoding consent modal with user-provided API key
+- [x] 02.1-01-PLAN.md - Encrypted storage adapter, data limits, CSP, privacy badge
+- [x] 02.1-02-PLAN.md - Bundled German postcode data and local geocoding service
+- [x] 02.1-03-PLAN.md - Integrate encrypted storage into stores, update types for postcode
+- [x] 02.1-04-PLAN.md - Clear data button, file size limits, seed data migration, CSV updates
+- [x] 02.1-05-PLAN.md - Accurate geocoding consent modal with user-provided API key
 
 ### Phase 3: Distance & Team Intelligence
 **Goal**: Users can see distances from employees to offices and analyze team co-location impact
@@ -114,7 +114,7 @@ Phases execute in numeric order: 1 -> 2 -> 2.1 -> 3 -> 4
 |-------|----------------|--------|-----------|
 | 1. Foundation & Data Pipeline | 3/3 | Complete | - |
 | 2. Map & Filtering | 4/4 | Complete | - |
-| 2.1 Security & Privacy Hardening | 0/5 | Not started | - |
+| 2.1 Security & Privacy Hardening | 5/5 | Complete | 2026-02-07 |
 | 3. Distance & Team Intelligence | 0/TBD | Not started | - |
 | 4. Export & Polish | 0/TBD | Not started | - |
 

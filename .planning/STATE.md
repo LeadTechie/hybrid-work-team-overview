@@ -5,34 +5,34 @@
 See: .planning/PROJECT.md (updated 2026-02-06)
 
 **Core value:** Employees can see which office is closest to them, and leadership can identify team composition changes that would reduce overall commute burden.
-**Current focus:** Phase 2 - Map & Filtering
+**Current focus:** Phase 3 - Distance & Team Intelligence
 
 ## Current Position
 
-Phase: 2.1 of 4 (Security & Privacy Hardening)
-Plan: 4 of 4 in current phase
-Status: Phase 02.1 complete
-Last activity: 2026-02-07 - Completed 02.1-04-PLAN.md
+Phase: 3 of 4 (Distance & Team Intelligence)
+Plan: 0 of TBD in current phase
+Status: Not planned
+Last activity: 2026-02-07 - Completed Phase 2.1 (Security & Privacy Hardening)
 
-Progress: [################----] 80% (10/12 plans total)
+Progress: [##################--] 85% (12/14 plans estimated)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 10
+- Total plans completed: 12
 - Average duration: 3 min
-- Total execution time: 29 min
+- Total execution time: 35 min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 01-foundation | 3 | 15 min | 5 min |
-| 02-map-filtering | 3 | 6 min | 2 min |
-| 02.1-security-privacy-hardening | 4 | 8 min | 2 min |
+| 02-map-filtering | 4 | 8 min | 2 min |
+| 02.1-security-privacy-hardening | 5 | 12 min | 2.4 min |
 
 **Recent Trend:**
-- Last 5 plans: 02-03 (2 min), 02.1-01 (1 min), 02.1-02 (2 min), 02.1-03 (2 min), 02.1-04 (3 min)
+- Last 5 plans: 02.1-01 (1 min), 02.1-02 (2 min), 02.1-03 (2 min), 02.1-04 (3 min), 02.1-05 (4 min)
 - Trend: Stable
 
 *Updated after each plan completion*
@@ -74,6 +74,10 @@ Recent decisions affecting current work:
 - [02.1-04]: Data limits enforced at import boundaries, not in stores
 - [02.1-04]: Seed employees use real postcode centroids, not fake clustering near offices
 - [02.1-04]: CSV import supports both postcode column and address extraction for compatibility
+- [02.1-05]: API key stored in sessionStorage only (cleared on tab close)
+- [02.1-05]: Seed employees use valid postcodes from bundled database (not faker random)
+- [02.1-05]: AccurateGeocodingButton in sidebar triggers consent flow
+- [02.1-05]: Tables display postcode, street, city columns instead of address
 
 ### Pending Todos
 
@@ -90,8 +94,8 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-07T10:04:00Z
-Stopped at: Completed 02.1-04-PLAN.md (Phase 02.1 complete)
+Last session: 2026-02-07T10:20:00Z
+Stopped at: Completed Phase 2.1 - Ready for Phase 3 planning
 Resume file: None
 
 ---
