@@ -8,6 +8,7 @@ import {
   type CsvParseResult,
   type ValidationError,
 } from './validationService';
+import { geocodeByPostcode } from './localGeocodingService';
 
 // Header normalization - removes BOM, trims, lowercases
 function normalizeHeader(header: string): string {
@@ -38,52 +39,39 @@ function canonicalizeHeader(header: string): string {
   return HEADER_ALIASES[normalized] || normalized;
 }
 
-// Build address from row data - handles single 'address' or split columns
-function buildAddress(row: Record<string, string>): string | null {
-  // First check for single address column
-  if (row.address && row.address.trim()) {
-    return row.address.trim();
+// Extract postcode from row data - supports postcode column or extraction from address
+function extractPostcode(row: Record<string, string>): string | null {
+  // Check dedicated postcode/plz column first
+  if (row.postcode?.trim()) {
+    return row.postcode.trim();
   }
 
-  // Try to combine street + postcode + city
-  const street = row.street?.trim();
-  const postcode = row.postcode?.trim();
-  const city = row.city?.trim();
-
-  if (street && postcode && city) {
-    return `${street}, ${postcode} ${city}`;
-  }
-
-  // Partial data - try what we have
-  if (street || city) {
-    const parts = [street, postcode, city].filter(Boolean);
-    if (parts.length >= 2) {
-      return parts.join(', ');
+  // Try to extract from address column (German postcodes are 5 digits)
+  if (row.address?.trim()) {
+    const match = row.address.match(/\b(\d{5})\b/);
+    if (match) {
+      return match[1];
     }
   }
 
   return null;
 }
 
-// Extract city from address or dedicated column
-function extractCity(row: Record<string, string>, address: string): string {
-  // If we have a dedicated city column, use it
-  if (row.city?.trim()) {
-    return row.city.trim();
+// Extract street from row data
+function extractStreet(row: Record<string, string>): string | undefined {
+  if (row.street?.trim()) {
+    return row.street.trim();
   }
 
-  // Try to extract from address (assume format: "Street, Postcode City" or "Street, City")
-  const parts = address.split(',').map((p) => p.trim());
-  if (parts.length >= 2) {
-    const lastPart = parts[parts.length - 1];
-    // Remove postcode if present (German postcodes are 5 digits)
-    const cityMatch = lastPart.replace(/^\d{5}\s*/, '').trim();
-    if (cityMatch) {
-      return cityMatch;
+  // Try to extract from address (everything before postcode)
+  if (row.address?.trim()) {
+    const match = row.address.match(/^(.+?),?\s*\d{5}/);
+    if (match) {
+      return match[1].replace(/,\s*$/, '').trim();
     }
   }
 
-  return 'Unknown';
+  return undefined;
 }
 
 // Parse CSV and normalize headers
@@ -106,7 +94,7 @@ function parseWithPapa(csvText: string): {
 
 /**
  * Parse office CSV data
- * Handles: comma/semicolon delimiters, single or split address columns, German headers
+ * Handles: comma/semicolon delimiters, postcode column or address extraction, German headers
  */
 export function parseOfficeCsv(csvText: string): CsvParseResult<Office> {
   const valid: Office[] = [];
@@ -124,26 +112,33 @@ export function parseOfficeCsv(csvText: string): CsvParseResult<Office> {
     const row = data[i];
     const rowNumber = i + 2; // +2 because row 1 is header, and we're 0-indexed
 
-    // Build address from row
-    const address = buildAddress(row);
+    // Extract postcode and street from row
+    const postcode = extractPostcode(row);
+    const street = extractStreet(row);
 
     // Prepare data for validation
     const officeData = {
       name: row.name?.trim() || '',
-      address: address || '',
+      postcode: postcode || '',
+      street: street,
+      city: row.city?.trim() || undefined,
     };
 
     // Validate with Zod
     const result = OfficeSchema.safeParse(officeData);
 
     if (result.success) {
-      const city = extractCity(row, address!);
+      // Use local geocoding for coordinates
+      const geocodeResult = geocodeByPostcode(result.data.postcode);
+
       valid.push({
         id: uuidv4(),
         name: result.data.name,
-        address: result.data.address,
-        city,
-        geocodeStatus: 'pending',
+        postcode: result.data.postcode,
+        street: result.data.street,
+        city: result.data.city || geocodeResult.city || undefined,
+        coords: geocodeResult.coords || undefined,
+        geocodeStatus: geocodeResult.coords ? 'success' : 'failed',
       });
     } else {
       invalid.push({
@@ -159,7 +154,7 @@ export function parseOfficeCsv(csvText: string): CsvParseResult<Office> {
 
 /**
  * Parse employee CSV data
- * Handles: comma/semicolon delimiters, single or split address columns, German headers
+ * Handles: comma/semicolon delimiters, postcode column or address extraction, German headers
  */
 export function parseEmployeeCsv(csvText: string): CsvParseResult<Employee> {
   const valid: Employee[] = [];
@@ -177,20 +172,25 @@ export function parseEmployeeCsv(csvText: string): CsvParseResult<Employee> {
     const row = data[i];
     const rowNumber = i + 2; // +2 because row 1 is header, and we're 0-indexed
 
-    // Build address from row
-    const address = buildAddress(row);
+    // Extract postcode and street from row
+    const postcode = extractPostcode(row);
+    const street = extractStreet(row);
 
     // Prepare data for validation
     const employeeData = {
       name: row.name?.trim() || '',
-      address: address || '',
+      postcode: postcode || '',
       team: row.team?.trim() || '',
+      street: street,
+      city: row.city?.trim() || undefined,
       department: row.department?.trim() || undefined,
       role: row.role?.trim() || undefined,
       assignedOffice: row.assignedoffice?.trim() || undefined,
     };
 
     // Clean up undefined values
+    if (!employeeData.street) delete employeeData.street;
+    if (!employeeData.city) delete employeeData.city;
     if (!employeeData.department) delete employeeData.department;
     if (!employeeData.role) delete employeeData.role;
     if (!employeeData.assignedOffice) delete employeeData.assignedOffice;
@@ -199,15 +199,22 @@ export function parseEmployeeCsv(csvText: string): CsvParseResult<Employee> {
     const result = EmployeeSchema.safeParse(employeeData);
 
     if (result.success) {
+      // Use local geocoding for coordinates
+      const geocodeResult = geocodeByPostcode(result.data.postcode);
+
       valid.push({
         id: uuidv4(),
         name: result.data.name,
-        address: result.data.address,
+        postcode: result.data.postcode,
+        street: result.data.street,
+        city: result.data.city || geocodeResult.city || undefined,
         team: result.data.team,
         department: result.data.department,
         role: result.data.role,
         assignedOffice: result.data.assignedOffice,
-        geocodeStatus: 'pending',
+        coords: geocodeResult.coords || undefined,
+        geocodeAccuracy: 'postcode-centroid',
+        geocodeStatus: geocodeResult.coords ? 'success' : 'failed',
       });
     } else {
       invalid.push({
