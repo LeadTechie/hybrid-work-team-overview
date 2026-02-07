@@ -17,7 +17,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 2.1: Security & Privacy Hardening** - Local postcode geocoding, encrypted localStorage, clear data button, CSP headers (INSERTED)
 - [ ] **Phase 3: Distance & Team Intelligence** - Distance calculations, nearest office, team co-location analysis
 - [ ] **Phase 4: Export & Polish** - CSV/PDF/Excel export, production hardening
-- [ ] **Phase 5: Better Visualizations** - Map B&W toggle, distance lines on click, Google Maps navigation links
+- [x] **Phase 5: Better Visualizations** - Map B&W toggle, distance lines on click, Google Maps navigation links
 
 ## Phase Details
 
@@ -118,8 +118,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 05-01-PLAN.md — Store, utility, and CSS foundations (mapMode, googleMapsUrl, marker enhancement, styles)
-- [ ] 05-02-PLAN.md — Component wiring (grayscale toggle, distance lines, Google Maps links, click-to-select)
+- [x] 05-01-PLAN.md — Store, utility, and CSS foundations (mapMode, googleMapsUrl, marker enhancement, styles)
+- [x] 05-02-PLAN.md — Component wiring (grayscale toggle, distance lines, Google Maps links, click-to-select)
 
 ## Progress
 
@@ -133,7 +133,7 @@ Phases execute in numeric order: 1 -> 2 -> 2.1 -> 3 -> 4 -> 5
 | 2.1 Security & Privacy Hardening | 5/5 | Complete | 2026-02-07 |
 | 3. Distance & Team Intelligence | 0/TBD | Not started | - |
 | 4. Export & Polish | 0/TBD | Not started | - |
-| 5. Better Visualizations | 0/2 | Not started | - |
+| 5. Better Visualizations | 2/2 | Complete | 2026-02-07 |
 
 ---
 *Roadmap created: 2026-02-06*
