@@ -15,7 +15,7 @@ export function createEmployeeIcon(
   const strokeWidth = isHighlighted ? 3 : 2;
 
   return L.divIcon({
-    className: 'employee-marker',
+    className: isHighlighted ? 'employee-marker-selected' : 'employee-marker',
     html: `
       <svg width="${size}" height="${size}" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path

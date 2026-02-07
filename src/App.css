@@ -297,6 +297,63 @@
   border: 1px solid #e5e7eb;
 }
 
+/* Grayscale map mode */
+.map-tiles-grayscale {
+  filter: grayscale(100%) brightness(105%);
+}
+
+/* Selected employee marker pulse */
+.employee-marker-selected svg {
+  filter: drop-shadow(0 0 6px rgba(59, 130, 246, 0.8));
+  animation: marker-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes marker-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+/* Distance line tooltips */
+.distance-tooltip {
+  background: rgba(30, 41, 59, 0.9) !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  padding: 2px 8px !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  white-space: nowrap !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+}
+
+.distance-tooltip::before {
+  display: none !important;
+}
+
+/* Map mode toggle */
+.map-mode-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+}
+
+.map-mode-toggle label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.map-mode-toggle input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
 /* Responsive layout */
 @media (max-width: 768px) {
   .app-header {
