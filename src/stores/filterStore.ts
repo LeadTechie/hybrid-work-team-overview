@@ -15,6 +15,7 @@ interface FilterState {
   selectedEmployeeId: string | null;
   mapZoomMode: MapZoomMode | null;
   disableClustering: boolean;
+  useRoadDistance: boolean;
 
   setTeamFilter: (team: string | null) => void;
   setDepartmentFilter: (dept: string | null) => void;
@@ -25,6 +26,7 @@ interface FilterState {
   setSelectedEmployeeId: (id: string | null) => void;
   setMapZoomMode: (mode: MapZoomMode | null) => void;
   setDisableClustering: (value: boolean) => void;
+  setUseRoadDistance: (value: boolean) => void;
   clearFilters: () => void;
 }
 
@@ -38,6 +40,7 @@ export const useFilterStore = create<FilterState>((set) => ({
   selectedEmployeeId: null,
   mapZoomMode: null,
   disableClustering: false,
+  useRoadDistance: false,
 
   setTeamFilter: (team) => set({ teamFilter: team }),
   setDepartmentFilter: (dept) => set({ departmentFilter: dept }),
@@ -48,6 +51,7 @@ export const useFilterStore = create<FilterState>((set) => ({
   setSelectedEmployeeId: (id) => set({ selectedEmployeeId: id }),
   setMapZoomMode: (mode) => set({ mapZoomMode: mode }),
   setDisableClustering: (value) => set({ disableClustering: value }),
+  setUseRoadDistance: (value) => set({ useRoadDistance: value }),
   clearFilters: () =>
     set({
       teamFilter: null,
@@ -56,6 +60,6 @@ export const useFilterStore = create<FilterState>((set) => ({
       searchQuery: '',
       selectedEmployeeId: null,
       mapZoomMode: null,
-      // Note: colorBy and mapMode are intentionally NOT reset (visual preferences, not filters)
+      // Note: colorBy, mapMode, and useRoadDistance are intentionally NOT reset (visual preferences, not filters)
     }),
 }));
