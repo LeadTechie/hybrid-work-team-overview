@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-06)
 ## Current Position
 
 Phase: 2.1 of 4 (Security & Privacy Hardening)
-Plan: 3 of 3 in current phase
-Status: Phase complete
-Last activity: 2026-02-07 - Completed 02.1-03-PLAN.md
+Plan: 4 of 4 in current phase
+Status: Phase 02.1 complete
+Last activity: 2026-02-07 - Completed 02.1-04-PLAN.md
 
-Progress: [###############-----] 75% (9/12 plans total)
+Progress: [################----] 80% (10/12 plans total)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 9
+- Total plans completed: 10
 - Average duration: 3 min
-- Total execution time: 26 min
+- Total execution time: 29 min
 
 **By Phase:**
 
@@ -29,10 +29,10 @@ Progress: [###############-----] 75% (9/12 plans total)
 |-------|-------|-------|----------|
 | 01-foundation | 3 | 15 min | 5 min |
 | 02-map-filtering | 3 | 6 min | 2 min |
-| 02.1-security-privacy-hardening | 3 | 5 min | 1.7 min |
+| 02.1-security-privacy-hardening | 4 | 8 min | 2 min |
 
 **Recent Trend:**
-- Last 5 plans: 02-02 (~2 min), 02-03 (2 min), 02.1-01 (1 min), 02.1-02 (2 min), 02.1-03 (2 min)
+- Last 5 plans: 02-03 (2 min), 02.1-01 (1 min), 02.1-02 (2 min), 02.1-03 (2 min), 02.1-04 (3 min)
 - Trend: Stable
 
 *Updated after each plan completion*
@@ -70,6 +70,10 @@ Recent decisions affecting current work:
 - [02.1-03]: createJSONStorage wrapper for Zustand encrypted storage compatibility
 - [02.1-03]: geocodeAccuracy field tracks postcode-centroid vs address precision
 - [02.1-03]: Breaking type changes (address->postcode) deferred to Plan 04 for migration
+- [02.1-04]: ClearDataButton clears stores, localStorage, sessionStorage then reloads
+- [02.1-04]: Data limits enforced at import boundaries, not in stores
+- [02.1-04]: Seed employees use real postcode centroids, not fake clustering near offices
+- [02.1-04]: CSV import supports both postcode column and address extraction for compatibility
 
 ### Pending Todos
 
@@ -77,9 +81,8 @@ None yet.
 
 ### Blockers/Concerns
 
-- Build warning about chunk size (766KB) due to @faker-js/faker bundling - acceptable for dev tooling
-- Geocoding requires VITE_GEOAPIFY_KEY environment variable - without it, all geocoding fails gracefully
-- Build currently broken due to type migration (address->postcode) - Plan 04 required to fix dependent files
+- Build warning about chunk size (~1.4MB) due to @faker-js/faker and postcode data bundling - acceptable for dev tooling
+- Geocoding now fully local - no API key required, no network calls
 
 ### Roadmap Evolution
 
@@ -87,8 +90,8 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-07T09:58:00Z
-Stopped at: Completed 02.1-03-PLAN.md (Phase 02.1 complete)
+Last session: 2026-02-07T10:04:00Z
+Stopped at: Completed 02.1-04-PLAN.md (Phase 02.1 complete)
 Resume file: None
 
 ---
