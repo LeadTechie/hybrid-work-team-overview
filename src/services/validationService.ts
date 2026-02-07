@@ -10,13 +10,17 @@ export const DATA_LIMITS = {
 // Zod schemas for validation
 export const OfficeSchema = z.object({
   name: z.string().min(1, 'Name is required'),
-  address: z.string().min(1, 'Address is required'),
+  postcode: z.string().regex(/^\d{5}$/, 'German postcode must be 5 digits'),
+  street: z.string().optional(),
+  city: z.string().optional(),
 });
 
 export const EmployeeSchema = z.object({
   name: z.string().min(1, 'Name is required'),
-  address: z.string().min(1, 'Address is required'),
+  postcode: z.string().regex(/^\d{5}$/, 'German postcode must be 5 digits'),
   team: z.string().min(1, 'Team is required'),
+  street: z.string().optional(),
+  city: z.string().optional(),
   department: z.string().optional(),
   role: z.string().optional(),
   assignedOffice: z.string().optional(),
