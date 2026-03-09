@@ -254,6 +254,28 @@
   min-width: 140px;
   max-height: 280px;
   overflow-y: auto;
+  scrollbar-width: auto;
+  scrollbar-color: #9ca3af #f3f4f6;
+}
+
+/* Webkit scrollbar - always visible and wider */
+.map-legend::-webkit-scrollbar {
+  width: 10px;
+}
+
+.map-legend::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 5px;
+}
+
+.map-legend::-webkit-scrollbar-thumb {
+  background: #9ca3af;
+  border-radius: 5px;
+  border: 2px solid #f3f4f6;
+}
+
+.map-legend::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
 }
 
 .map-legend-title {
