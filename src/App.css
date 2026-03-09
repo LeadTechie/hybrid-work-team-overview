@@ -265,6 +265,15 @@
   border-bottom: 1px solid #e5e7eb;
 }
 
+.map-legend-title-clickable {
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.map-legend-title-clickable:hover {
+  color: #1e40af;
+}
+
 .map-legend-items {
   display: flex;
   flex-direction: column;

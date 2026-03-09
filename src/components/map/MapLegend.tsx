@@ -82,9 +82,30 @@ export function MapLegend() {
     }
   };
 
+  const handleTitleClick = () => {
+    // Clear the filter for current colorBy mode
+    switch (colorBy) {
+      case 'team':
+        setTeamFilter(null);
+        break;
+      case 'department':
+        setDepartmentFilter(null);
+        break;
+      case 'assignedOffice':
+        setOfficeFilter(null);
+        break;
+    }
+  };
+
   return (
     <div className="map-legend">
-      <div className="map-legend-title">{title}</div>
+      <div
+        className={`map-legend-title${activeFilter ? ' map-legend-title-clickable' : ''}`}
+        onClick={activeFilter ? handleTitleClick : undefined}
+        title={activeFilter ? `Show all ${title.toLowerCase()}` : undefined}
+      >
+        {title}
+      </div>
       <div className="map-legend-items">
         {legendItems.map(({ label, color }) => {
           const isActive = activeFilter === label;
