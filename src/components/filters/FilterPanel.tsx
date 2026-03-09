@@ -3,6 +3,7 @@ import { useEmployeeStore } from '../../stores/employeeStore';
 import { useOfficeStore } from '../../stores/officeStore';
 import { useFilterStore, type ColorByOption } from '../../stores/filterStore';
 import { CircuityInfoModal } from '../CircuityInfoModal';
+import { DistanceSlider } from './DistanceSlider';
 
 /**
  * Filter panel with dropdowns for team, department, office filtering
@@ -174,6 +175,10 @@ export function FilterPanel() {
           ?
         </button>
       </div>
+
+      {/* Distance filter slider */}
+      <DistanceSlider />
+
       {showCircuityInfo && (
         <CircuityInfoModal onClose={() => setShowCircuityInfo(false)} />
       )}
