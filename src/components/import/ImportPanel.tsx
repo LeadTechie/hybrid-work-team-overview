@@ -271,6 +271,20 @@ export function ImportPanel({ initialTab, onClose }: ImportPanelProps = {}) {
           </button>
         </div>
 
+        {parseResult && parseResult.valid.length > 0 && (
+          <div style={{ marginBottom: '16px' }}>
+            <button
+              style={{
+                ...styles.button,
+                ...styles.primaryButton,
+              }}
+              onClick={handleImport}
+            >
+              Import {parseResult.valid.length} valid row{parseResult.valid.length === 1 ? '' : 's'}
+            </button>
+          </div>
+        )}
+
         <CsvUploader
           onCsvChange={handleCsvChange}
           placeholder=""
