@@ -18,7 +18,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [ ] **Phase 3: Distance & Team Intelligence** - Distance calculations, nearest office, team co-location analysis
 - [ ] **Phase 4: Export & Polish** - CSV/PDF/Excel export, production hardening
 - [x] **Phase 5: Better Visualizations** - Map B&W toggle, distance lines on click, Google Maps navigation links
-- [ ] **Phase 6: Cleanup** - Dynamic team legend, distance filter slider
+- [x] **Phase 6: Cleanup** - Dynamic team legend, distance filter slider
 
 ## Phase Details
 
@@ -136,8 +136,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 06-01-PLAN.md — Dynamic ColorService with accessible palette, refactor MapLegend
-- [ ] 06-02-PLAN.md — Distance filter slider with dual handles, filtering logic
+- [x] 06-01-PLAN.md — Dynamic ColorService with accessible palette, refactor MapLegend
+- [x] 06-02-PLAN.md — Distance filter slider with dual handles, filtering logic
 
 ## Progress
 
@@ -152,7 +152,7 @@ Phases execute in numeric order: 1 -> 2 -> 2.1 -> 3 -> 4 -> 5 -> 6
 | 3. Distance & Team Intelligence | 2/2 | Complete | 2026-02-07 |
 | 4. Export & Polish | 0/TBD | Not started | - |
 | 5. Better Visualizations | 2/2 | Complete | 2026-02-07 |
-| 6. Cleanup | 0/2 | Not started | - |
+| 6. Cleanup | 2/2 | Complete   | 2026-03-09 |
 
 ---
 *Roadmap created: 2026-02-06*
