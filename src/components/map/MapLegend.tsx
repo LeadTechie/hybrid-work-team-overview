@@ -1,12 +1,11 @@
+import { useMemo } from 'react';
 import { useFilterStore } from '../../stores/filterStore';
-import {
-  TEAM_COLORS,
-  DEPARTMENT_COLORS,
-  OFFICE_COLORS,
-} from '../../utils/markerColors';
+import { useEmployeeStore } from '../../stores/employeeStore';
+import { colorService } from '../../services/colorService';
 
 /**
  * Legend component showing color meanings for the current colorBy mode.
+ * Derives legend items dynamically from ALL employees (not filtered).
  * Clicking a legend item filters to show only that group and zooms out.
  * Positioned in the bottom-right corner of the map.
  */
@@ -19,28 +18,48 @@ export function MapLegend() {
   const setDepartmentFilter = useFilterStore((s) => s.setDepartmentFilter);
   const setOfficeFilter = useFilterStore((s) => s.setOfficeFilter);
 
-  let colorMap: Record<string, string>;
+  // Get ALL employees for deriving legend items (not filtered)
+  const employees = useEmployeeStore((s) => s.employees);
+
+  // Derive legend items from actual employee data
+  const legendItems = useMemo(() => {
+    let values: string[];
+    switch (colorBy) {
+      case 'team':
+        values = [...new Set(employees.map((e) => e.team))].filter((v): v is string => Boolean(v)).sort();
+        break;
+      case 'department':
+        values = [...new Set(employees.map((e) => e.department))].filter((v): v is string => Boolean(v)).sort();
+        break;
+      case 'assignedOffice':
+        values = [...new Set(employees.map((e) => e.assignedOffice))].filter((v): v is string => Boolean(v)).sort();
+        break;
+      default:
+        values = [];
+    }
+    return values.map((value) => ({
+      label: value,
+      color: colorService.getColor(colorBy, value),
+    }));
+  }, [employees, colorBy]);
+
   let title: string;
   let activeFilter: string | null;
 
   switch (colorBy) {
     case 'team':
-      colorMap = TEAM_COLORS;
       title = 'Teams';
       activeFilter = teamFilter;
       break;
     case 'department':
-      colorMap = DEPARTMENT_COLORS;
       title = 'Departments';
       activeFilter = departmentFilter;
       break;
     case 'assignedOffice':
-      colorMap = OFFICE_COLORS;
       title = 'Offices';
       activeFilter = officeFilter;
       break;
     default:
-      colorMap = TEAM_COLORS;
       title = 'Teams';
       activeFilter = teamFilter;
   }
@@ -63,14 +82,11 @@ export function MapLegend() {
     }
   };
 
-  // Get entries, excluding 'default'
-  const entries = Object.entries(colorMap).filter(([key]) => key !== 'default');
-
   return (
     <div className="map-legend">
       <div className="map-legend-title">{title}</div>
       <div className="map-legend-items">
-        {entries.map(([label, color]) => {
+        {legendItems.map(({ label, color }) => {
           const isActive = activeFilter === label;
           return (
             <div
