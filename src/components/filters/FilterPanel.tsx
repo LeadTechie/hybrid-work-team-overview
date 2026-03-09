@@ -1,45 +1,20 @@
-import { useMemo, useState } from 'react';
-import { useEmployeeStore } from '../../stores/employeeStore';
-import { useOfficeStore } from '../../stores/officeStore';
+import { useState } from 'react';
 import { useFilterStore, type ColorByOption } from '../../stores/filterStore';
 import { CircuityInfoModal } from '../CircuityInfoModal';
 import { DistanceSlider } from './DistanceSlider';
 
 /**
- * Filter panel with dropdowns for team, department, office filtering
- * and color-by selection.
+ * Filter panel with color-by selection and map settings.
+ * Team/department/office filtering is done via the legend checkboxes.
  */
 export function FilterPanel() {
-  const employees = useEmployeeStore((s) => s.employees);
-  const offices = useOfficeStore((s) => s.offices);
   const [showCircuityInfo, setShowCircuityInfo] = useState(false);
 
-  const teamFilter = useFilterStore((s) => s.teamFilter);
-  const departmentFilter = useFilterStore((s) => s.departmentFilter);
-  const officeFilter = useFilterStore((s) => s.officeFilter);
   const colorBy = useFilterStore((s) => s.colorBy);
-
-  const setTeamFilter = useFilterStore((s) => s.setTeamFilter);
-  const setDepartmentFilter = useFilterStore((s) => s.setDepartmentFilter);
-  const setOfficeFilter = useFilterStore((s) => s.setOfficeFilter);
   const mapMode = useFilterStore((s) => s.mapMode);
   const setColorBy = useFilterStore((s) => s.setColorBy);
   const setMapMode = useFilterStore((s) => s.setMapMode);
   const clearFilters = useFilterStore((s) => s.clearFilters);
-
-  // Derive unique teams from employees
-  const teams = useMemo(() => {
-    return [...new Set(employees.map((e) => e.team))]
-      .filter(Boolean)
-      .sort() as string[];
-  }, [employees]);
-
-  // Derive unique departments from employees
-  const departments = useMemo(() => {
-    return [...new Set(employees.map((e) => e.department))]
-      .filter(Boolean)
-      .sort() as string[];
-  }, [employees]);
 
   return (
     <div className="filter-panel">
@@ -54,57 +29,6 @@ export function FilterPanel() {
           <option value="team">Team</option>
           <option value="department">Department</option>
           <option value="assignedOffice">Assigned Office</option>
-        </select>
-      </div>
-
-      {/* Team filter */}
-      <div className="filter-group">
-        <label htmlFor="team-filter">Team:</label>
-        <select
-          id="team-filter"
-          value={teamFilter ?? ''}
-          onChange={(e) => setTeamFilter(e.target.value || null)}
-        >
-          <option value="">All Teams</option>
-          {teams.map((team) => (
-            <option key={team} value={team}>
-              {team}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* Department filter */}
-      <div className="filter-group">
-        <label htmlFor="dept-filter">Department:</label>
-        <select
-          id="dept-filter"
-          value={departmentFilter ?? ''}
-          onChange={(e) => setDepartmentFilter(e.target.value || null)}
-        >
-          <option value="">All Departments</option>
-          {departments.map((dept) => (
-            <option key={dept} value={dept}>
-              {dept}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* Office filter */}
-      <div className="filter-group">
-        <label htmlFor="office-filter">Office:</label>
-        <select
-          id="office-filter"
-          value={officeFilter ?? ''}
-          onChange={(e) => setOfficeFilter(e.target.value || null)}
-        >
-          <option value="">All Offices</option>
-          {offices.map((office) => (
-            <option key={office.id} value={office.name}>
-              {office.name}
-            </option>
-          ))}
         </select>
       </div>
 

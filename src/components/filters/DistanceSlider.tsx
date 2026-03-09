@@ -17,9 +17,9 @@ export function DistanceSlider() {
   const setDistanceReference = useFilterStore((s) => s.setDistanceReference);
 
   // Get other filters (not distance) to compute counts based on current filter state
-  const teamFilter = useFilterStore((s) => s.teamFilter);
-  const departmentFilter = useFilterStore((s) => s.departmentFilter);
-  const officeFilter = useFilterStore((s) => s.officeFilter);
+  const teamFilters = useFilterStore((s) => s.teamFilters);
+  const departmentFilters = useFilterStore((s) => s.departmentFilters);
+  const officeFilters = useFilterStore((s) => s.officeFilters);
   const searchQuery = useFilterStore((s) => s.searchQuery);
 
   // Helper to calculate distance to reference point for an employee
@@ -57,9 +57,9 @@ export function DistanceSlider() {
     // Apply all filters except distance
     const filteredEmployees = employees.filter((emp) => {
       if (emp.geocodeStatus !== 'success' || !emp.coords) return false;
-      if (teamFilter && emp.team !== teamFilter) return false;
-      if (departmentFilter && emp.department !== departmentFilter) return false;
-      if (officeFilter && emp.assignedOffice !== officeFilter) return false;
+      if (teamFilters.size > 0 && emp.team && !teamFilters.has(emp.team)) return false;
+      if (departmentFilters.size > 0 && emp.department && !departmentFilters.has(emp.department)) return false;
+      if (officeFilters.size > 0 && emp.assignedOffice && !officeFilters.has(emp.assignedOffice)) return false;
       if (searchQuery.length > 0) {
         const query = searchQuery.toLowerCase();
         if (!emp.name.toLowerCase().includes(query)) return false;
@@ -102,7 +102,7 @@ export function DistanceSlider() {
       inRangeCount: inRange,
       aboveCount: above
     };
-  }, [employees, offices, distanceReference, teamFilter, departmentFilter, officeFilter, searchQuery, distanceMin, distanceMax]);
+  }, [employees, offices, distanceReference, teamFilters, departmentFilters, officeFilters, searchQuery, distanceMin, distanceMax]);
 
   // Clamp displayed values to slider range
   const displayMin = Math.min(distanceMin, sliderMax);

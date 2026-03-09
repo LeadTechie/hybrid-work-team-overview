@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useRef, useEffect } from 'react';
 import { useFilterStore } from '../../stores/filterStore';
 import { useEmployeeStore } from '../../stores/employeeStore';
 import { colorService } from '../../services/colorService';
@@ -6,17 +6,22 @@ import { colorService } from '../../services/colorService';
 /**
  * Legend component showing color meanings for the current colorBy mode.
  * Derives legend items dynamically from ALL employees (not filtered).
- * Clicking a legend item filters to show only that group and zooms out.
+ * Uses checkboxes for multi-select filtering with tri-state header.
  * Positioned in the bottom-right corner of the map.
  */
 export function MapLegend() {
   const colorBy = useFilterStore((s) => s.colorBy);
-  const teamFilter = useFilterStore((s) => s.teamFilter);
-  const departmentFilter = useFilterStore((s) => s.departmentFilter);
-  const officeFilter = useFilterStore((s) => s.officeFilter);
-  const setTeamFilter = useFilterStore((s) => s.setTeamFilter);
-  const setDepartmentFilter = useFilterStore((s) => s.setDepartmentFilter);
-  const setOfficeFilter = useFilterStore((s) => s.setOfficeFilter);
+  const teamFilters = useFilterStore((s) => s.teamFilters);
+  const departmentFilters = useFilterStore((s) => s.departmentFilters);
+  const officeFilters = useFilterStore((s) => s.officeFilters);
+  const toggleTeamFilter = useFilterStore((s) => s.toggleTeamFilter);
+  const toggleDepartmentFilter = useFilterStore((s) => s.toggleDepartmentFilter);
+  const toggleOfficeFilter = useFilterStore((s) => s.toggleOfficeFilter);
+  const setTeamFilters = useFilterStore((s) => s.setTeamFilters);
+  const setDepartmentFilters = useFilterStore((s) => s.setDepartmentFilters);
+  const setOfficeFilters = useFilterStore((s) => s.setOfficeFilters);
+
+  const headerCheckboxRef = useRef<HTMLInputElement>(null);
 
   // Get ALL employees for deriving legend items (not filtered)
   const employees = useEmployeeStore((s) => s.employees);
@@ -43,85 +48,103 @@ export function MapLegend() {
     }));
   }, [employees, colorBy]);
 
-  let title: string;
-  let activeFilter: string | null;
-
-  switch (colorBy) {
-    case 'team':
-      title = 'Teams';
-      activeFilter = teamFilter;
-      break;
-    case 'department':
-      title = 'Departments';
-      activeFilter = departmentFilter;
-      break;
-    case 'assignedOffice':
-      title = 'Offices';
-      activeFilter = officeFilter;
-      break;
-    default:
-      title = 'Teams';
-      activeFilter = teamFilter;
-  }
-
-  const handleLegendClick = (label: string) => {
-    // Toggle: if already filtered to this, clear the filter
-    const isAlreadyActive = activeFilter === label;
-    const newValue = isAlreadyActive ? null : label;
-
+  // Get current filter set and setters based on colorBy
+  const { activeFilters, toggleFilter, setFilters, title } = useMemo(() => {
     switch (colorBy) {
       case 'team':
-        setTeamFilter(newValue);
-        break;
+        return {
+          activeFilters: teamFilters,
+          toggleFilter: toggleTeamFilter,
+          setFilters: setTeamFilters,
+          title: 'Teams',
+        };
       case 'department':
-        setDepartmentFilter(newValue);
-        break;
+        return {
+          activeFilters: departmentFilters,
+          toggleFilter: toggleDepartmentFilter,
+          setFilters: setDepartmentFilters,
+          title: 'Departments',
+        };
       case 'assignedOffice':
-        setOfficeFilter(newValue);
-        break;
+        return {
+          activeFilters: officeFilters,
+          toggleFilter: toggleOfficeFilter,
+          setFilters: setOfficeFilters,
+          title: 'Offices',
+        };
+      default:
+        return {
+          activeFilters: teamFilters,
+          toggleFilter: toggleTeamFilter,
+          setFilters: setTeamFilters,
+          title: 'Teams',
+        };
+    }
+  }, [colorBy, teamFilters, departmentFilters, officeFilters, toggleTeamFilter, toggleDepartmentFilter, toggleOfficeFilter, setTeamFilters, setDepartmentFilters, setOfficeFilters]);
+
+  const allLabels = legendItems.map((item) => item.label);
+  const selectedCount = activeFilters.size;
+  const totalCount = allLabels.length;
+
+  // Tri-state: none selected, some selected (indeterminate), all selected
+  const isAllSelected = selectedCount === totalCount && totalCount > 0;
+  const isIndeterminate = selectedCount > 0 && selectedCount < totalCount;
+
+  // Update indeterminate state on the checkbox
+  useEffect(() => {
+    if (headerCheckboxRef.current) {
+      headerCheckboxRef.current.indeterminate = isIndeterminate;
+    }
+  }, [isIndeterminate]);
+
+  const handleHeaderClick = () => {
+    // If none or some selected -> select all
+    // If all selected -> select none
+    if (isAllSelected) {
+      setFilters(new Set<string>());
+    } else {
+      setFilters(new Set(allLabels));
     }
   };
 
-  const handleTitleClick = () => {
-    // Clear the filter for current colorBy mode
-    switch (colorBy) {
-      case 'team':
-        setTeamFilter(null);
-        break;
-      case 'department':
-        setDepartmentFilter(null);
-        break;
-      case 'assignedOffice':
-        setOfficeFilter(null);
-        break;
-    }
+  const handleItemClick = (label: string) => {
+    toggleFilter(label);
   };
 
   return (
     <div className="map-legend">
-      <div
-        className={`map-legend-title${activeFilter ? ' map-legend-title-clickable' : ''}`}
-        onClick={activeFilter ? handleTitleClick : undefined}
-        title={activeFilter ? `Show all ${title.toLowerCase()}` : undefined}
-      >
-        {title}
+      <div className="map-legend-header">
+        <label className="map-legend-checkbox-label">
+          <input
+            ref={headerCheckboxRef}
+            type="checkbox"
+            checked={isAllSelected}
+            onChange={handleHeaderClick}
+            className="map-legend-checkbox"
+          />
+          <span className="map-legend-title">{title}</span>
+        </label>
       </div>
       <div className="map-legend-items">
         {legendItems.map(({ label, color }) => {
-          const isActive = activeFilter === label;
+          const isChecked = activeFilters.has(label);
           return (
-            <div
+            <label
               key={label}
-              className={`map-legend-item map-legend-item-clickable${isActive ? ' map-legend-item-active' : ''}`}
-              onClick={() => handleLegendClick(label)}
-              title={isActive ? `Show all ${title.toLowerCase()}` : `Filter to ${label}`}
+              className="map-legend-item map-legend-checkbox-label"
             >
+              <input
+                type="checkbox"
+                checked={isChecked}
+                onChange={() => handleItemClick(label)}
+                className="map-legend-checkbox"
+              />
               <span
                 className="map-legend-color"
                 style={{ backgroundColor: color }}
               />
               <span className="map-legend-label">{label}</span>
-            </div>
+            </label>
           );
         })}
       </div>

@@ -12,9 +12,9 @@ import type { Employee } from '../types/employee';
 export function useFilteredEmployees(): Employee[] {
   const employees = useEmployeeStore((s) => s.employees);
   const offices = useOfficeStore((s) => s.offices);
-  const teamFilter = useFilterStore((s) => s.teamFilter);
-  const departmentFilter = useFilterStore((s) => s.departmentFilter);
-  const officeFilter = useFilterStore((s) => s.officeFilter);
+  const teamFilters = useFilterStore((s) => s.teamFilters);
+  const departmentFilters = useFilterStore((s) => s.departmentFilters);
+  const officeFilters = useFilterStore((s) => s.officeFilters);
   const searchQuery = useFilterStore((s) => s.searchQuery);
   const distanceMin = useFilterStore((s) => s.distanceMin);
   const distanceMax = useFilterStore((s) => s.distanceMax);
@@ -56,18 +56,18 @@ export function useFilteredEmployees(): Employee[] {
         return false;
       }
 
-      // Apply team filter
-      if (teamFilter && emp.team !== teamFilter) {
+      // Apply team filter (empty set = show all)
+      if (teamFilters.size > 0 && emp.team && !teamFilters.has(emp.team)) {
         return false;
       }
 
-      // Apply department filter
-      if (departmentFilter && emp.department !== departmentFilter) {
+      // Apply department filter (empty set = show all)
+      if (departmentFilters.size > 0 && emp.department && !departmentFilters.has(emp.department)) {
         return false;
       }
 
-      // Apply office filter
-      if (officeFilter && emp.assignedOffice !== officeFilter) {
+      // Apply office filter (empty set = show all)
+      if (officeFilters.size > 0 && emp.assignedOffice && !officeFilters.has(emp.assignedOffice)) {
         return false;
       }
 
@@ -91,9 +91,9 @@ export function useFilteredEmployees(): Employee[] {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     employees,
-    teamFilter,
-    departmentFilter,
-    officeFilter,
+    teamFilters,
+    departmentFilters,
+    officeFilters,
     searchQuery,
     distanceMin,
     distanceMax,

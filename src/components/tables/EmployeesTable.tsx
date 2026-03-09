@@ -15,10 +15,13 @@ export function EmployeesTable() {
   const allEmployees = useEmployeeStore((s) => s.employees);
   const filteredEmployees = useFilteredEmployees();
   const { offices } = useOfficeStore();
-  const { teamFilter, departmentFilter, officeFilter, searchQuery } = useFilterStore();
+  const teamFilters = useFilterStore((s) => s.teamFilters);
+  const departmentFilters = useFilterStore((s) => s.departmentFilters);
+  const officeFilters = useFilterStore((s) => s.officeFilters);
+  const searchQuery = useFilterStore((s) => s.searchQuery);
   const useRoadDistance = useFilterStore((s) => s.useRoadDistance);
 
-  const hasFilters = teamFilter || departmentFilter || officeFilter || searchQuery;
+  const hasFilters = teamFilters.size > 0 || departmentFilters.size > 0 || officeFilters.size > 0 || searchQuery;
   const baseEmployees = hasFilters ? filteredEmployees : allEmployees;
 
   // Build columns dynamically based on offices

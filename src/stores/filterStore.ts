@@ -6,9 +6,10 @@ export type MapMode = 'normal' | 'grayscale';
 export type MapZoomMode = 'zoomIn' | 'zoomOut';
 
 interface FilterState {
-  teamFilter: string | null;
-  departmentFilter: string | null;
-  officeFilter: string | null;
+  // Multi-select filters: empty set = show all, non-empty = show only selected
+  teamFilters: Set<string>;
+  departmentFilters: Set<string>;
+  officeFilters: Set<string>;
   searchQuery: string;
   colorBy: ColorByOption;
   mapMode: MapMode;
@@ -20,9 +21,14 @@ interface FilterState {
   distanceMax: number;
   distanceReference: string; // 'nearest' or office name
 
-  setTeamFilter: (team: string | null) => void;
-  setDepartmentFilter: (dept: string | null) => void;
-  setOfficeFilter: (office: string | null) => void;
+  // Toggle individual item in filter set
+  toggleTeamFilter: (team: string) => void;
+  toggleDepartmentFilter: (dept: string) => void;
+  toggleOfficeFilter: (office: string) => void;
+  // Set all items at once (for select all / clear all)
+  setTeamFilters: (teams: Set<string>) => void;
+  setDepartmentFilters: (depts: Set<string>) => void;
+  setOfficeFilters: (offices: Set<string>) => void;
   setSearchQuery: (query: string) => void;
   setColorBy: (colorBy: ColorByOption) => void;
   setMapMode: (mode: MapMode) => void;
@@ -36,10 +42,10 @@ interface FilterState {
   clearFilters: () => void;
 }
 
-export const useFilterStore = create<FilterState>((set) => ({
-  teamFilter: null,
-  departmentFilter: null,
-  officeFilter: null,
+export const useFilterStore = create<FilterState>((set, get) => ({
+  teamFilters: new Set<string>(),
+  departmentFilters: new Set<string>(),
+  officeFilters: new Set<string>(),
   searchQuery: '',
   colorBy: 'team',
   mapMode: 'normal',
@@ -51,9 +57,39 @@ export const useFilterStore = create<FilterState>((set) => ({
   distanceMax: Infinity, // No upper bound by default (shows all)
   distanceReference: 'nearest',
 
-  setTeamFilter: (team) => set({ teamFilter: team }),
-  setDepartmentFilter: (dept) => set({ departmentFilter: dept }),
-  setOfficeFilter: (office) => set({ officeFilter: office }),
+  toggleTeamFilter: (team) => {
+    const current = get().teamFilters;
+    const next = new Set(current);
+    if (next.has(team)) {
+      next.delete(team);
+    } else {
+      next.add(team);
+    }
+    set({ teamFilters: next });
+  },
+  toggleDepartmentFilter: (dept) => {
+    const current = get().departmentFilters;
+    const next = new Set(current);
+    if (next.has(dept)) {
+      next.delete(dept);
+    } else {
+      next.add(dept);
+    }
+    set({ departmentFilters: next });
+  },
+  toggleOfficeFilter: (office) => {
+    const current = get().officeFilters;
+    const next = new Set(current);
+    if (next.has(office)) {
+      next.delete(office);
+    } else {
+      next.add(office);
+    }
+    set({ officeFilters: next });
+  },
+  setTeamFilters: (teams) => set({ teamFilters: teams }),
+  setDepartmentFilters: (depts) => set({ departmentFilters: depts }),
+  setOfficeFilters: (offices) => set({ officeFilters: offices }),
   setSearchQuery: (query) => set({ searchQuery: query }),
   setColorBy: (colorBy) => set({ colorBy }),
   setMapMode: (mode) => set({ mapMode: mode }),
@@ -66,9 +102,9 @@ export const useFilterStore = create<FilterState>((set) => ({
   setDistanceReference: (ref) => set({ distanceReference: ref }),
   clearFilters: () =>
     set({
-      teamFilter: null,
-      departmentFilter: null,
-      officeFilter: null,
+      teamFilters: new Set<string>(),
+      departmentFilters: new Set<string>(),
+      officeFilters: new Set<string>(),
       searchQuery: '',
       selectedEmployeeId: null,
       mapZoomMode: null,
