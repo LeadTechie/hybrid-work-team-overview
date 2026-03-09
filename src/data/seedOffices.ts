@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import type { Office } from '../types/office';
 
 /**
- * Generate 5 German office locations with pre-geocoded coordinates.
+ * Generate 6 German office locations with pre-geocoded coordinates.
  * These are major German cities with significant tech presence.
  * Uses postcode-based format with pre-defined coordinates.
  */
@@ -51,6 +51,15 @@ export function generateSeedOffices(): Office[] {
       street: 'Koenigsallee 60',
       city: 'Duesseldorf',
       coords: { lat: 51.2277, lon: 6.7735 },
+      geocodeStatus: 'success',
+    },
+    {
+      id: uuidv4(),
+      name: 'Karlsruhe Office',
+      postcode: '76133',
+      street: 'Kaiserstrasse 72',
+      city: 'Karlsruhe',
+      coords: { lat: 49.0069, lon: 8.4037 },
       geocodeStatus: 'success',
     },
   ];
