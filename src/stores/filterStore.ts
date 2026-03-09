@@ -16,6 +16,9 @@ interface FilterState {
   mapZoomMode: MapZoomMode | null;
   disableClustering: boolean;
   useRoadDistance: boolean;
+  distanceMin: number;
+  distanceMax: number;
+  distanceReference: string; // 'nearest' or office name
 
   setTeamFilter: (team: string | null) => void;
   setDepartmentFilter: (dept: string | null) => void;
@@ -27,6 +30,9 @@ interface FilterState {
   setMapZoomMode: (mode: MapZoomMode | null) => void;
   setDisableClustering: (value: boolean) => void;
   setUseRoadDistance: (value: boolean) => void;
+  setDistanceMin: (value: number) => void;
+  setDistanceMax: (value: number) => void;
+  setDistanceReference: (ref: string) => void;
   clearFilters: () => void;
 }
 
@@ -41,6 +47,9 @@ export const useFilterStore = create<FilterState>((set) => ({
   mapZoomMode: null,
   disableClustering: false,
   useRoadDistance: false,
+  distanceMin: 0,
+  distanceMax: Infinity, // No upper bound by default (shows all)
+  distanceReference: 'nearest',
 
   setTeamFilter: (team) => set({ teamFilter: team }),
   setDepartmentFilter: (dept) => set({ departmentFilter: dept }),
@@ -52,6 +61,9 @@ export const useFilterStore = create<FilterState>((set) => ({
   setMapZoomMode: (mode) => set({ mapZoomMode: mode }),
   setDisableClustering: (value) => set({ disableClustering: value }),
   setUseRoadDistance: (value) => set({ useRoadDistance: value }),
+  setDistanceMin: (value) => set({ distanceMin: value }),
+  setDistanceMax: (value) => set({ distanceMax: value }),
+  setDistanceReference: (ref) => set({ distanceReference: ref }),
   clearFilters: () =>
     set({
       teamFilter: null,
@@ -60,6 +72,9 @@ export const useFilterStore = create<FilterState>((set) => ({
       searchQuery: '',
       selectedEmployeeId: null,
       mapZoomMode: null,
+      distanceMin: 0,
+      distanceMax: Infinity,
+      distanceReference: 'nearest',
       // Note: colorBy, mapMode, and useRoadDistance are intentionally NOT reset (visual preferences, not filters)
     }),
 }));
