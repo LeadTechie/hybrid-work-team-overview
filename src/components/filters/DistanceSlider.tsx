@@ -3,6 +3,7 @@ import { useEmployeeStore } from '../../stores/employeeStore';
 import { useOfficeStore } from '../../stores/officeStore';
 import { useFilterStore } from '../../stores/filterStore';
 import { calculateDistance } from '../../utils/distance';
+import type { Employee } from '../../types/employee';
 
 export function DistanceSlider() {
   const employees = useEmployeeStore((s) => s.employees);
@@ -15,54 +16,93 @@ export function DistanceSlider() {
   const setDistanceMax = useFilterStore((s) => s.setDistanceMax);
   const setDistanceReference = useFilterStore((s) => s.setDistanceReference);
 
-  // Calculate max distance from data for slider range
-  const { sliderMax, hasData } = useMemo(() => {
-    const geocodedEmployees = employees.filter(
-      (e) => e.geocodeStatus === 'success' && e.coords
-    );
-    const geocodedOffices = offices.filter((o) => o.coords);
+  // Get other filters (not distance) to compute counts based on current filter state
+  const teamFilter = useFilterStore((s) => s.teamFilter);
+  const departmentFilter = useFilterStore((s) => s.departmentFilter);
+  const officeFilter = useFilterStore((s) => s.officeFilter);
+  const searchQuery = useFilterStore((s) => s.searchQuery);
 
-    if (geocodedEmployees.length === 0 || geocodedOffices.length === 0) {
-      return { sliderMax: 100, hasData: false };
+  // Helper to calculate distance to reference point for an employee
+  const getDistanceToReference = (emp: Employee, geocodedOffices: typeof offices): number | null => {
+    if (!emp.coords) return null;
+    if (geocodedOffices.length === 0) return null;
+
+    if (distanceReference === 'nearest') {
+      return Math.min(
+        ...geocodedOffices.map((o) =>
+          calculateDistance(
+            emp.coords!.lat,
+            emp.coords!.lon,
+            o.coords!.lat,
+            o.coords!.lon
+          )
+        )
+      );
     }
 
-    let maxDist = 0;
-    for (const emp of geocodedEmployees) {
-      if (!emp.coords) continue;
+    const refOffice = geocodedOffices.find((o) => o.name === distanceReference);
+    if (!refOffice?.coords) return null;
+    return calculateDistance(
+      emp.coords.lat,
+      emp.coords.lon,
+      refOffice.coords.lat,
+      refOffice.coords.lon
+    );
+  };
 
-      if (distanceReference === 'nearest') {
-        // Find distance to nearest office
-        const nearestDist = Math.min(
-          ...geocodedOffices.map((o) =>
-            calculateDistance(
-              emp.coords!.lat,
-              emp.coords!.lon,
-              o.coords!.lat,
-              o.coords!.lon
-            )
-          )
-        );
-        maxDist = Math.max(maxDist, nearestDist);
+  // Calculate max distance and counts based on current filters (excluding distance)
+  const { sliderMax, hasData, belowCount, inRangeCount, aboveCount } = useMemo(() => {
+    const geocodedOffices = offices.filter((o) => o.coords);
+
+    // Apply all filters except distance
+    const filteredEmployees = employees.filter((emp) => {
+      if (emp.geocodeStatus !== 'success' || !emp.coords) return false;
+      if (teamFilter && emp.team !== teamFilter) return false;
+      if (departmentFilter && emp.department !== departmentFilter) return false;
+      if (officeFilter && emp.assignedOffice !== officeFilter) return false;
+      if (searchQuery.length > 0) {
+        const query = searchQuery.toLowerCase();
+        if (!emp.name.toLowerCase().includes(query)) return false;
+      }
+      return true;
+    });
+
+    if (filteredEmployees.length === 0 || geocodedOffices.length === 0) {
+      return { sliderMax: 100, hasData: false, belowCount: 0, inRangeCount: 0, aboveCount: 0 };
+    }
+
+    // Calculate distances for all filtered employees
+    let maxDist = 0;
+    let below = 0;
+    let inRange = 0;
+    let above = 0;
+
+    for (const emp of filteredEmployees) {
+      const dist = getDistanceToReference(emp, geocodedOffices);
+      if (dist === null) continue;
+
+      maxDist = Math.max(maxDist, dist);
+
+      // Categorize by distance range
+      if (dist < distanceMin) {
+        below++;
+      } else if (distanceMax === Infinity || dist <= distanceMax) {
+        inRange++;
       } else {
-        // Find distance to specific office
-        const refOffice = geocodedOffices.find(
-          (o) => o.name === distanceReference
-        );
-        if (refOffice?.coords) {
-          const dist = calculateDistance(
-            emp.coords.lat,
-            emp.coords.lon,
-            refOffice.coords.lat,
-            refOffice.coords.lon
-          );
-          maxDist = Math.max(maxDist, dist);
-        }
+        above++;
       }
     }
 
     // Round up to nearest 10km for cleaner UI
-    return { sliderMax: Math.ceil(maxDist / 10) * 10 || 100, hasData: true };
-  }, [employees, offices, distanceReference]);
+    const computedMax = Math.ceil(maxDist / 10) * 10 || 100;
+    return {
+      sliderMax: computedMax,
+      hasData: true,
+      belowCount: below,
+      inRangeCount: inRange,
+      aboveCount: above
+    };
+  }, [employees, offices, distanceReference, teamFilter, departmentFilter, officeFilter, searchQuery, distanceMin, distanceMax]);
 
   // Clamp displayed values to slider range
   const displayMin = Math.min(distanceMin, sliderMax);
@@ -126,6 +166,15 @@ export function DistanceSlider() {
           <span>
             {displayMax >= sliderMax ? `${sliderMax}+ km` : `${displayMax} km`}
           </span>
+        </div>
+        <div className="slider-counts">
+          {distanceMin > 0 && (
+            <span className="count-below">{belowCount} closer</span>
+          )}
+          <span className="count-in-range">{inRangeCount} in range</span>
+          {distanceMax !== Infinity && distanceMax < sliderMax && (
+            <span className="count-above">{aboveCount} further</span>
+          )}
         </div>
       </div>
     </div>
