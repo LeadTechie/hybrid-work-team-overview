@@ -18,6 +18,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [ ] **Phase 3: Distance & Team Intelligence** - Distance calculations, nearest office, team co-location analysis
 - [ ] **Phase 4: Export & Polish** - CSV/PDF/Excel export, production hardening
 - [x] **Phase 5: Better Visualizations** - Map B&W toggle, distance lines on click, Google Maps navigation links
+- [ ] **Phase 6: Cleanup** - Dynamic team legend, distance filter slider
 
 ## Phase Details
 
@@ -121,10 +122,27 @@ Plans:
 - [x] 05-01-PLAN.md — Store, utility, and CSS foundations (mapMode, googleMapsUrl, marker enhancement, styles)
 - [x] 05-02-PLAN.md — Component wiring (grayscale toggle, distance lines, Google Maps links, click-to-select)
 
+### Phase 6: Cleanup - Dynamic Team Legend and Distance Filter Slider
+**Goal**: Dynamic color assignment for legend (fixes gray colors for imported team names) and distance-based filtering with dual-handle slider
+**Depends on**: Phase 5
+**Requirements**: None specified (enhancement phase)
+**Success Criteria** (what must be TRUE):
+  1. Legend shows ALL teams/departments derived from employee data (not hardcoded)
+  2. Imported data with new team names shows assigned colors, not gray
+  3. Color assignments persist across browser sessions in localStorage
+  4. User can filter employees by distance from reference (nearest office or specific office)
+  5. Dual-handle slider allows selecting min and max distance range
+  6. Slider range auto-detects from data (max = furthest employee from reference)
+**Plans**: 2 plans
+
+Plans:
+- [ ] 06-01-PLAN.md — Dynamic ColorService with accessible palette, refactor MapLegend
+- [ ] 06-02-PLAN.md — Distance filter slider with dual handles, filtering logic
+
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 2.1 -> 3 -> 4 -> 5
+Phases execute in numeric order: 1 -> 2 -> 2.1 -> 3 -> 4 -> 5 -> 6
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -134,6 +152,7 @@ Phases execute in numeric order: 1 -> 2 -> 2.1 -> 3 -> 4 -> 5
 | 3. Distance & Team Intelligence | 2/2 | Complete | 2026-02-07 |
 | 4. Export & Polish | 0/TBD | Not started | - |
 | 5. Better Visualizations | 2/2 | Complete | 2026-02-07 |
+| 6. Cleanup | 0/2 | Not started | - |
 
 ---
 *Roadmap created: 2026-02-06*
