@@ -9,6 +9,7 @@ import type { Employee } from '../../types/employee';
 
 interface EmployeeWithDistances extends Employee {
   [key: `distance_${string}`]: number | null;
+  nearestOfficeDistance: number | null;
 }
 
 export function EmployeesTable() {
@@ -60,6 +61,12 @@ export function EmployeesTable() {
           </span>
         ),
       },
+      {
+        key: 'nearestOfficeDistance',
+        label: useRoadDistance ? '~> Nearest' : '-> Nearest',
+        sortable: true,
+        render: (emp) => formatDistance(emp.nearestOfficeDistance, useRoadDistance),
+      },
     ];
 
     // Add a column for each office showing distance
@@ -80,22 +87,28 @@ export function EmployeesTable() {
   // Enrich employees with distance calculations
   const displayEmployees = useMemo((): EmployeeWithDistances[] => {
     return baseEmployees.map((emp) => {
-      const enriched: EmployeeWithDistances = { ...emp };
+      const enriched: EmployeeWithDistances = { ...emp, nearestOfficeDistance: null };
+      let minDistance: number | null = null;
 
       offices.forEach((office) => {
         const distanceKey = `distance_${office.id}` as const;
         if (emp.coords && office.coords) {
-          enriched[distanceKey] = calculateDistance(
+          const distance = calculateDistance(
             emp.coords.lat,
             emp.coords.lon,
             office.coords.lat,
             office.coords.lon
           );
+          enriched[distanceKey] = distance;
+          if (minDistance === null || distance < minDistance) {
+            minDistance = distance;
+          }
         } else {
           enriched[distanceKey] = null;
         }
       });
 
+      enriched.nearestOfficeDistance = minDistance;
       return enriched;
     });
   }, [baseEmployees, offices]);

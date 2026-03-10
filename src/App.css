@@ -252,34 +252,46 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   z-index: 1000;
   min-width: 140px;
-  max-height: 280px;
-  overflow-y: scroll;
-  scrollbar-width: auto;
-  scrollbar-color: #9ca3af #f3f4f6;
-  -webkit-overflow-scrolling: touch;
 }
 
-/* Webkit scrollbar - always visible and wider */
-.map-legend::-webkit-scrollbar {
-  width: 10px;
+.map-legend-minimized {
+  padding: 8px 12px;
 }
 
-.map-legend::-webkit-scrollbar-track {
-  background: #f3f4f6;
-  border-radius: 5px;
+.map-legend-toggle-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  color: #374151;
+  font-size: 13px;
 }
 
-.map-legend::-webkit-scrollbar-thumb {
-  background: #9ca3af;
-  border-radius: 5px;
-  border: 2px solid #f3f4f6;
+.map-legend-toggle-btn:hover {
+  color: #1f2937;
 }
 
-.map-legend::-webkit-scrollbar-thumb:hover {
-  background: #6b7280;
+.map-legend-toggle-icon {
+  font-size: 10px;
+}
+
+.map-legend-minimize-btn {
+  font-size: 10px;
+  padding: 2px 4px;
+  color: #9ca3af;
+}
+
+.map-legend-minimize-btn:hover {
+  color: #374151;
 }
 
 .map-legend-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 8px;
   padding-bottom: 6px;
   border-bottom: 1px solid #e5e7eb;

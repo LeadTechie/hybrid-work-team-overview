@@ -118,6 +118,49 @@ export function ImportPanel({ initialTab, onClose }: ImportPanelProps = {}) {
   const { offices, addOffices } = useOfficeStore();
   const { employees, addEmployees } = useEmployeeStore();
 
+  const doImport = useCallback((result: CsvParseResult<Office | Employee>, type: ImportType) => {
+    if (!result || result.valid.length === 0) return false;
+
+    const currentCount = type === 'offices' ? offices.length : employees.length;
+    const limit = type === 'offices' ? DATA_LIMITS.MAX_OFFICES : DATA_LIMITS.MAX_EMPLOYEES;
+    const newTotal = currentCount + result.valid.length;
+
+    if (newTotal > limit) {
+      setError(`Cannot import: would exceed ${limit} ${type} limit. ` +
+        `Current: ${currentCount}, Importing: ${result.valid.length}`);
+      return false;
+    }
+
+    setError(null);
+
+    const validItems = result.valid;
+
+    if (type === 'offices') {
+      addOffices(validItems as Office[]);
+    } else {
+      addEmployees(validItems as Employee[]);
+    }
+
+    let geocodedCount = 0;
+    let failedCount = 0;
+
+    validItems.forEach((item) => {
+      if (item.geocodeStatus === 'success') {
+        geocodedCount++;
+      } else {
+        failedCount++;
+      }
+    });
+
+    setImportResult({
+      total: validItems.length,
+      geocoded: geocodedCount,
+      failed: failedCount,
+    });
+    setMode('done');
+    return true;
+  }, [offices.length, employees.length, addOffices, addEmployees]);
+
   const handleCsvChange = useCallback((text: string) => {
     setCsvText(text);
 
@@ -133,8 +176,14 @@ export function ImportPanel({ initialTab, onClose }: ImportPanelProps = {}) {
       : parseEmployeeCsv(text);
 
     setParseResult(result);
-    setMode('preview');
-  }, [importType]);
+
+    // Auto-import if all data is valid (no invalid rows)
+    if (result.valid.length > 0 && result.invalid.length === 0) {
+      doImport(result, importType);
+    } else {
+      setMode('preview');
+    }
+  }, [importType, doImport]);
 
   const handleTabChange = (type: ImportType) => {
     setImportType(type);
@@ -157,47 +206,7 @@ export function ImportPanel({ initialTab, onClose }: ImportPanelProps = {}) {
 
   const handleImport = () => {
     if (!parseResult || parseResult.valid.length === 0) return;
-
-    // Check data limits before import
-    const currentCount = importType === 'offices' ? offices.length : employees.length;
-    const limit = importType === 'offices' ? DATA_LIMITS.MAX_OFFICES : DATA_LIMITS.MAX_EMPLOYEES;
-    const newTotal = currentCount + parseResult.valid.length;
-
-    if (newTotal > limit) {
-      setError(`Cannot import: would exceed ${limit} ${importType} limit. ` +
-        `Current: ${currentCount}, Importing: ${parseResult.valid.length}`);
-      return;
-    }
-
-    setError(null);
-
-    const validItems = parseResult.valid;
-
-    // Add items to store - geocoding already done during parsing (synchronous local geocoding)
-    if (importType === 'offices') {
-      addOffices(validItems as Office[]);
-    } else {
-      addEmployees(validItems as Employee[]);
-    }
-
-    // Count geocoded vs failed from the parsed items
-    let geocodedCount = 0;
-    let failedCount = 0;
-
-    validItems.forEach((item) => {
-      if (item.geocodeStatus === 'success') {
-        geocodedCount++;
-      } else {
-        failedCount++;
-      }
-    });
-
-    setImportResult({
-      total: validItems.length,
-      geocoded: geocodedCount,
-      failed: failedCount,
-    });
-    setMode('done');
+    doImport(parseResult, importType);
   };
 
   const handleImportMore = () => {

@@ -1,4 +1,4 @@
-import { useMemo, useRef, useEffect } from 'react';
+import { useMemo, useRef, useEffect, useState } from 'react';
 import { useFilterStore } from '../../stores/filterStore';
 import { useEmployeeStore } from '../../stores/employeeStore';
 import { colorService } from '../../services/colorService';
@@ -10,6 +10,7 @@ import { colorService } from '../../services/colorService';
  * Positioned in the bottom-right corner of the map.
  */
 export function MapLegend() {
+  const [isMinimized, setIsMinimized] = useState(false);
   const colorBy = useFilterStore((s) => s.colorBy);
   const teamFilters = useFilterStore((s) => s.teamFilters);
   const departmentFilters = useFilterStore((s) => s.departmentFilters);
@@ -111,6 +112,21 @@ export function MapLegend() {
     toggleFilter(label);
   };
 
+  if (isMinimized) {
+    return (
+      <div className="map-legend map-legend-minimized">
+        <button
+          className="map-legend-toggle-btn"
+          onClick={() => setIsMinimized(false)}
+          title="Show legend"
+        >
+          <span className="map-legend-toggle-icon">&#9654;</span>
+          <span className="map-legend-title">{title}</span>
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="map-legend">
       <div className="map-legend-header">
@@ -124,6 +140,13 @@ export function MapLegend() {
           />
           <span className="map-legend-title">{title}</span>
         </label>
+        <button
+          className="map-legend-toggle-btn map-legend-minimize-btn"
+          onClick={() => setIsMinimized(true)}
+          title="Minimize legend"
+        >
+          &#9660;
+        </button>
       </div>
       <div className="map-legend-items">
         {legendItems.map(({ label, color }) => {
